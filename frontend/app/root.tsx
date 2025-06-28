@@ -1,4 +1,4 @@
-import { App as AntApp, ConfigProvider, theme } from "antd";
+import '@ant-design/v5-patch-for-react-19';
 import {
 	isRouteErrorResponse,
 	Links,
@@ -23,35 +23,7 @@ export const links: Route.LinksFunction = () => [
 	},
 ];
 
-const themeConfig = {
-	token: {
-		colorPrimary: "#1890ff",
-		borderRadius: 8,
-		fontSize: 16,
-		colorBgContainer: "#ffffff",
-		colorBgElevated: "#ffffff",
-		colorBorderSecondary: "#f0f0f0",
-		colorText: "#262626",
-		colorTextSecondary: "#8c8c8c",
-		text: "234234"
-	},
-	algorithm: [theme.defaultAlgorithm, theme.compactAlgorithm],
-	components: {
-		Layout: {
-			headerBg: "#ffffff",
-			headerColor: "#262626",
-			siderBg: "#ffffff",
-			siderBorderColor: "#ffffff",
-			bodyBg: "#ffffff",
-		},
-		Menu: {
-			itemBg: "transparent",
-			itemSelectedBg: "#e6f7ff",
-			itemHoverBg: "#f5f5f5",
-		},
-	},
-};
-
+import { AppProvider } from "./contexts/AppContext";
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
@@ -62,9 +34,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Links />
 			</head>
 			<body>
-				<ConfigProvider theme={themeConfig}>
-					<AntApp>{children}</AntApp>
-				</ConfigProvider>
+				<AppProvider>{children}</AppProvider>
 				<ScrollRestoration />
 				<Scripts />
 			</body>
@@ -73,13 +43,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 import MainLayout from "./components/Layout/MainLayout";
-
 export default function App() {
-	return (
-		<>
-			<MainLayout />
-		</>
-	);
+	return <MainLayout />;
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

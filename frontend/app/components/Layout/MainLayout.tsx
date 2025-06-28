@@ -21,15 +21,18 @@ import {
 	Flex,
 	Layout,
 	Menu,
+	type MenuProps,
 	Space,
 	Typography,
 	theme,
-	type MenuProps,
 } from "antd";
 
 // Import React hooks and React Router
 import { useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
+
+// import useTheme
+import { useTheme } from "~/contexts/ThemeContext";
 
 // Destructure Layout components from Ant Design
 const { Header, Sider, Content } = Layout;
@@ -57,22 +60,31 @@ const TriggerButton = ({
 	);
 };
 
-
 // Define the Logo component
 const Logo = () => {
 	const { token } = theme.useToken();
 	return (
 		<Text>
-			<Text style={{ color: token.colorPrimary, fontSize: "20px", fontWeight: "bold" }}>Chill</Text>
-			<Text style={{ color: "orange", fontSize: "20px", fontWeight: "bold" }}>Teacher</Text>
+			<Text
+				style={{
+					color: token.colorPrimary,
+					fontSize: "20px",
+					fontWeight: "bold",
+				}}
+			>
+				Chill
+			</Text>
+			<Text style={{ color: "orange", fontSize: "20px", fontWeight: "bold" }}>
+				Teacher
+			</Text>
 		</Text>
 	);
 };
 
-
 // Define the MainLayout component
 const MainLayout = () => {
 	const [collapsed, setCollapsed] = useState(false);
+	const { theme, toggleTheme } = useTheme();
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -160,6 +172,9 @@ const MainLayout = () => {
 					{/* Logo */}
 					<Logo />
 				</Space>
+
+				{/* Theme control */}
+				<Button onClick={toggleTheme}>{theme}</Button>
 
 				{/* User Menu */}
 				<Dropdown
