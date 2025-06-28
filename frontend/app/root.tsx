@@ -33,6 +33,7 @@ const themeConfig = {
 		colorBorderSecondary: "#f0f0f0",
 		colorText: "#262626",
 		colorTextSecondary: "#8c8c8c",
+		text: "234234"
 	},
 	algorithm: [theme.defaultAlgorithm, theme.compactAlgorithm],
 	components: {
@@ -40,6 +41,7 @@ const themeConfig = {
 			headerBg: "#ffffff",
 			headerColor: "#262626",
 			siderBg: "#ffffff",
+			siderBorderColor: "#ffffff",
 			bodyBg: "#ffffff",
 		},
 		Menu: {

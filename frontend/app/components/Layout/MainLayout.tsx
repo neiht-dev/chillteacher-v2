@@ -1,3 +1,4 @@
+// Import Icons from Ant Design
 import {
 	BarChartOutlined,
 	BookOutlined,
@@ -11,31 +12,72 @@ import {
 	TeamOutlined,
 	UserOutlined,
 } from "@ant-design/icons";
+
+// Import Components from Ant Design
 import {
 	Avatar,
-	Breadcrumb,
 	Button,
 	Dropdown,
+	Flex,
 	Layout,
 	Menu,
 	Space,
 	Typography,
 	theme,
+	type MenuProps,
 } from "antd";
-import type React from "react";
+
+// Import React hooks and React Router
 import { useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
 
+// Destructure Layout components from Ant Design
 const { Header, Sider, Content } = Layout;
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
+// Define the TriggerButton component
+const TriggerButton = ({
+	collapsed,
+	setCollapsed,
+}: {
+	collapsed: boolean;
+	setCollapsed: (collapsed: boolean) => void;
+}) => {
+	return (
+		<Button
+			style={{
+				fontSize: "1.2rem",
+				width: "100%",
+				height: "2rem",
+			}}
+			type="text"
+			icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+			onClick={() => setCollapsed(!collapsed)}
+		/>
+	);
+};
+
+
+// Define the Logo component
+const Logo = () => {
+	const { token } = theme.useToken();
+	return (
+		<Text>
+			<Text style={{ color: token.colorPrimary, fontSize: "20px", fontWeight: "bold" }}>Chill</Text>
+			<Text style={{ color: "orange", fontSize: "20px", fontWeight: "bold" }}>Teacher</Text>
+		</Text>
+	);
+};
+
+
+// Define the MainLayout component
 const MainLayout = () => {
 	const [collapsed, setCollapsed] = useState(false);
 	const location = useLocation();
 	const navigate = useNavigate();
-	const { token } = theme.useToken();
 
-	const menuItems = [
+	// Define the menu items
+	const menuItems: MenuProps["items"] = [
 		{
 			key: "/dashboard",
 			icon: <DashboardOutlined />,
@@ -78,7 +120,8 @@ const MainLayout = () => {
 		},
 	];
 
-	const userMenuItems = [
+	// Define the user menu items
+	const userMenuItems: MenuProps["items"] = [
 		{
 			key: "profile",
 			icon: <UserOutlined />,
@@ -90,7 +133,7 @@ const MainLayout = () => {
 			label: "Settings",
 		},
 		{
-			type: "divider" as const,
+			type: "divider",
 		},
 		{
 			key: "logout",
@@ -99,53 +142,67 @@ const MainLayout = () => {
 		},
 	];
 
+	// Return the MainLayout component
 	return (
 		<Layout style={{ minHeight: "100vh" }}>
 			{/* Header */}
-			<Header className="flex justify-between items-center">
-				<div className="flex items-center justify-center py-2">
+			<Header
+				style={{
+					height: "3rem",
+					display: "flex",
+					justifyContent: "space-between",
+					alignItems: "center",
+					boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+					zIndex: 99,
+				}}
+			>
+				<Space>
 					{/* Logo */}
-					<Text>
-						<Text
-							style={{
-								color: token.colorPrimary,
-								fontSize: "24px",
-								fontWeight: "bold",
-							}}
-						>
-							Chill
-						</Text>
-						<Text
-							style={{ color: "orange", fontSize: "24px", fontWeight: "bold" }}
-						>
-							Teacher
-						</Text>
-					</Text>
-				</div>
+					<Logo />
+				</Space>
 
 				{/* User Menu */}
-				<Dropdown menu={{ items: userMenuItems }} placement="bottomRight" trigger={["click"]}>
+				<Dropdown
+					menu={{ items: userMenuItems }}
+					placement="bottomRight"
+					trigger={["click"]}
+				>
 					<Space size="middle" className="cursor-pointer">
 						<Avatar icon={<UserOutlined />} size="small" />
-						<Text style={{ color: token.colorText }}>User Name</Text>
+						<Text>User Name</Text>
 					</Space>
 				</Dropdown>
 			</Header>
 
 			{/* Sidebar and Content */}
-			<Layout>
+			<Layout style={{ margin: "0.5rem 0" }}>
 				{/* Sidebar */}
-				<Sider trigger={null} collapsible collapsed={collapsed} width={256}>
-					<Menu
-						mode="inline"
-						selectedKeys={[location.pathname]}
-						items={menuItems}
-						onClick={({ key }) => navigate(key)}
-					/>
+				<Sider
+					trigger={null}
+					collapsible
+					collapsed={collapsed}
+					breakpoint="lg"
+					width={200}
+					style={{ borderRight: "1px solid #e5e7eb" }}
+				>
+					<Flex
+						vertical
+						justify="space-between"
+						style={{ height: "100%", padding: "0 0.5rem" }}
+					>
+						<Menu
+							style={{ border: "none" }}
+							mode="inline"
+							selectedKeys={[location.pathname]}
+							items={menuItems}
+							onClick={({ key }) => navigate(key)}
+						/>
+						<TriggerButton collapsed={collapsed} setCollapsed={setCollapsed} />
+					</Flex>
 				</Sider>
 
 				{/* Content */}
-				<Content className="p-4 bg-amber-400">
+				<Content style={{ padding: "1rem" }}>
 					<Outlet />
 				</Content>
 			</Layout>
