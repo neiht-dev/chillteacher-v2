@@ -84,7 +84,7 @@ const Logo = () => {
 // Define the MainLayout component
 const MainLayout = () => {
 	const [collapsed, setCollapsed] = useState(false);
-	const { theme, toggleTheme } = useTheme();
+	const { selectedTheme, toggleTheme } = useTheme();
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -174,7 +174,7 @@ const MainLayout = () => {
 				</Space>
 
 				{/* Theme control */}
-				<Button onClick={toggleTheme}>{theme}</Button>
+				<Button onClick={toggleTheme}>{selectedTheme}</Button>
 
 				{/* User Menu */}
 				<Dropdown

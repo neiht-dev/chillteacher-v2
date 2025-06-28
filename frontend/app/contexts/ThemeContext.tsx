@@ -1,94 +1,92 @@
-import type React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
+import {
+	getFromLocalStorage,
+	LocalStorageKeys,
+	setToLocalStorage,
+} from "../utils/utils";
 
-type Theme = "light" | "dark" | "system";
-
-interface ThemeContextType {
-	theme: Theme;
-	currentTheme: "light" | "dark"; // Resolved theme (system -> light/dark)
-	toggleTheme: () => void;
-	setTheme: (theme: Theme) => void;
+// Define enum for the theme
+export enum Theme {
+	Light = "light",
+	Dark = "dark",
+	System = "system",
 }
 
+// Define theme types
+// SelectedTheme is the theme that the user has selected
+// ActualTheme is the actual theme that is applied to the app
+type SelectedTheme = Theme;
+type ActualTheme = Exclude<Theme, Theme.System>;
+
+// ThemeContextType is the type of the context
+interface ThemeContextType {
+	selectedTheme: SelectedTheme;
+	actualTheme: ActualTheme;
+	toggleTheme: () => void;
+	setTheme: (theme: SelectedTheme) => void;
+}
+
+// ThemeContext is the context that is used to store the theme
+// Undefined is used to indicate that the context is not yet defined
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 // Get system theme preference
-const getSystemTheme = (): "light" | "dark" => {
+const getSystemTheme = (): ActualTheme => {
+	// Check if window is defined and matchMedia is supported
 	if (typeof window !== "undefined" && window.matchMedia) {
 		return window.matchMedia("(prefers-color-scheme: dark)").matches
-			? "dark"
-			: "light";
+			? Theme.Dark
+			: Theme.Light;
 	}
-	return "light";
-};
-
-// Get stored theme from localStorage
-const getStoredTheme = (): Theme => {
-	if (typeof window !== "undefined") {
-		const stored = localStorage.getItem("theme");
-		return (stored as Theme) || "system";
-	}
-	return "system";
-};
-
-// Store theme in localStorage
-const storeTheme = (theme: Theme) => {
-	if (typeof window !== "undefined") {
-		localStorage.setItem("theme", theme);
-	}
+	// Default to light theme
+	return Theme.Light;
 };
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
-	const [theme, setThemeState] = useState<Theme>(getStoredTheme);
-	const [currentTheme, setCurrentTheme] = useState<"light" | "dark">("light");
+	// Define the state for the selected theme
+	// Initial value is the theme from the local storage
+	// It can be system, light, or dark
+	const [selectedTheme, setSelectedTheme] = useState<SelectedTheme>(
+		getFromLocalStorage(LocalStorageKeys.THEME) || Theme.System,
+	);
+
+	// Define the state for the actual theme
+	// Initial value is the system theme
+	// It can be light or dark
+	const [actualTheme, setActualTheme] = useState<ActualTheme>(getSystemTheme());
 
 	// Resolve system theme to actual light/dark
 	useEffect(() => {
-		const resolveTheme = () => {
-			if (theme === "system") {
-				const systemTheme = getSystemTheme();
-				setCurrentTheme(systemTheme);
-			} else {
-				setCurrentTheme(theme);
-			}
-		};
-
-		resolveTheme();
-
-		// Listen for system theme changes
-		if (theme === "system" && typeof window !== "undefined") {
-			const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-			const handleChange = () => resolveTheme();
-
-			mediaQuery.addEventListener("change", handleChange);
-			return () => mediaQuery.removeEventListener("change", handleChange);
+		if (selectedTheme === Theme.System) {
+			const systemTheme = getSystemTheme();
+			setActualTheme(systemTheme);
+		} else {
+			setActualTheme(selectedTheme);
 		}
-	}, [theme]);
 
-	// Store theme changes in localStorage
-	useEffect(() => {
-		storeTheme(theme);
-	}, [theme]);
+		// Store the selected theme in the local storage
+		setToLocalStorage(LocalStorageKeys.THEME, selectedTheme);
+	}, [selectedTheme]);
 
-	const setTheme = (newTheme: Theme) => {
-		setThemeState(newTheme);
+	// Set the theme
+	const setTheme = (newTheme: SelectedTheme) => {
+		setSelectedTheme(newTheme);
 	};
 
+	// Toggle the theme
 	const toggleTheme = () => {
-		setThemeState((prev) => {
-			if (prev === "light") return "dark";
-			if (prev === "dark") return "system";
-			return "light";
+		setSelectedTheme((prev) => {
+			return prev === Theme.Light ? Theme.Dark : Theme.Light;
 		});
 	};
 
 	return (
 		<ThemeContext.Provider
 			value={{
-				theme,
-				currentTheme,
+				selectedTheme,
+				actualTheme,
 				toggleTheme,
 				setTheme,
 			}}

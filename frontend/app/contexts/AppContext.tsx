@@ -1,5 +1,5 @@
 import { App as AntApp, ConfigProvider, theme } from "antd";
-import { ThemeProvider, useTheme } from "./ThemeContext";
+import { Theme, ThemeProvider, useTheme } from "./ThemeContext";
 
 // Define theme light config
 const themeLightConfig = {
@@ -42,12 +42,12 @@ const themeDarkConfig = {
 
 // Define AppContent to use contexts after being wrapped by Context Providers
 const AppContent = ({ children }: { children: React.ReactNode }) => {
-	const { theme } = useTheme();
-	console.log("Current theme:", theme);
+	const { actualTheme } = useTheme();
+	console.log("Current theme:", actualTheme);
 
 	return (
 		<ConfigProvider
-			theme={theme === "light" ? themeLightConfig : themeDarkConfig}
+			theme={actualTheme === Theme.Light ? themeLightConfig : themeDarkConfig}
 		>
 			<AntApp>{children}</AntApp>
 		</ConfigProvider>
