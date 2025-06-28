@@ -1,4 +1,5 @@
 import { App as AntApp, ConfigProvider, theme } from "antd";
+import { LangOption, LangProvider, useLang } from "./LangContext";
 import { Theme, ThemeProvider, useTheme } from "./ThemeContext";
 
 // Define theme light config
@@ -43,8 +44,6 @@ const themeDarkConfig = {
 // Define AppContent to use contexts after being wrapped by Context Providers
 const AppContent = ({ children }: { children: React.ReactNode }) => {
 	const { actualTheme } = useTheme();
-	console.log("Current theme:", actualTheme);
-
 	return (
 		<ConfigProvider
 			theme={actualTheme === Theme.Light ? themeLightConfig : themeDarkConfig}
@@ -58,7 +57,9 @@ const AppContent = ({ children }: { children: React.ReactNode }) => {
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<ThemeProvider>
-			<AppContent>{children}</AppContent>
+			<LangProvider>
+				<AppContent>{children}</AppContent>
+			</LangProvider>
 		</ThemeProvider>
 	);
 };

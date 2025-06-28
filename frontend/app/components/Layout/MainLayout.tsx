@@ -30,6 +30,7 @@ import {
 // Import React hooks and React Router
 import { useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
+import { useLang } from "~/contexts/LangContext";
 
 // import useTheme
 import { useTheme } from "~/contexts/ThemeContext";
@@ -85,6 +86,7 @@ const Logo = () => {
 const MainLayout = () => {
 	const [collapsed, setCollapsed] = useState(false);
 	const { selectedTheme, toggleTheme } = useTheme();
+	const { selectedLang, toggleLang } = useLang();
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -175,6 +177,9 @@ const MainLayout = () => {
 
 				{/* Theme control */}
 				<Button onClick={toggleTheme}>{selectedTheme}</Button>
+
+				{/* Lamng Control */}
+				<Button onClick={toggleLang}>{selectedLang}</Button>
 
 				{/* User Menu */}
 				<Dropdown

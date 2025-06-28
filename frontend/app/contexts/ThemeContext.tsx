@@ -82,6 +82,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 		});
 	};
 
+	// Return the ThemeProvider component
 	return (
 		<ThemeContext.Provider
 			value={{
@@ -96,6 +97,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 	);
 };
 
+// useTheme is the hook that is used to get the theme context
 export const useTheme = () => {
 	const context = useContext(ThemeContext);
 	if (context === undefined) {

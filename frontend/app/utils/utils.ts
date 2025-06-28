@@ -4,6 +4,7 @@ export const isBrowser = () => typeof window !== "undefined";
 // Define the keys for the local storage
 export enum LocalStorageKeys {
 	THEME = "theme",
+	LANG = "lang",
 }
 
 // Get a value from the local storage
