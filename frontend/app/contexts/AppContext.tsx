@@ -44,7 +44,7 @@ const themeDarkConfig = {
 const AppContent = ({ children }: { children: React.ReactNode }) => {
 	const { theme } = useTheme();
 	console.log("Current theme:", theme);
-	
+
 	return (
 		<ConfigProvider
 			theme={theme === "light" ? themeLightConfig : themeDarkConfig}
@@ -62,4 +62,3 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 		</ThemeProvider>
 	);
 };
-
