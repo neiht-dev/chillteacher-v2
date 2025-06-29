@@ -1,4 +1,5 @@
 import { App as AntApp, ConfigProvider, theme } from "antd";
+import { AuthProvider } from "./AuthContext";
 import { LangProvider } from "./LangContext";
 import { Theme, ThemeProvider, useTheme } from "./ThemeContext";
 
@@ -330,7 +331,9 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<LangProvider>
 			<ThemeProvider>
-				<AppContent>{children}</AppContent>
+				<AuthProvider>
+					<AppContent>{children}</AppContent>
+				</AuthProvider>
 			</ThemeProvider>
 		</LangProvider>
 	);

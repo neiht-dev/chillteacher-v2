@@ -33,10 +33,10 @@ import {
 // Import React hooks and React Router
 import { useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
-
+// Import AuthContext
+import { useAuth } from "~/contexts/AuthContext";
 // Import LangContext
 import { useLang } from "~/contexts/LangContext";
-
 // Import ThemeContext
 import { useTheme } from "~/contexts/ThemeContext";
 
@@ -95,6 +95,7 @@ const MainLayout = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const { token } = theme.useToken();
+	const { user } = useAuth();
 
 	// Define the menu items
 	const menuItems: MenuProps["items"] = [
@@ -256,7 +257,7 @@ const MainLayout = () => {
 								style={{ backgroundColor: token.colorPrimary }}
 							/>
 							<Text style={{ fontSize: "0.875rem", color: token.colorText }}>
-								User Name
+								{user?.name}
 							</Text>
 						</Flex>
 					</Dropdown>

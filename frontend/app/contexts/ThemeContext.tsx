@@ -82,8 +82,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	// Toggle the theme
 	const toggleTheme = () => {
-		const newTheme =
-			selectedTheme === Theme.Light ? Theme.Dark : Theme.Light;
+		const newTheme = selectedTheme === Theme.Light ? Theme.Dark : Theme.Light;
 		setSelectedTheme(newTheme);
 		message.success(t(`Theme changed to ${newTheme}`));
 	};
