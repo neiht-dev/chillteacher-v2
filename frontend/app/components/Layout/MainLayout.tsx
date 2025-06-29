@@ -2,8 +2,10 @@
 import {
 	BarChartOutlined,
 	BookOutlined,
+	BulbOutlined,
 	CalendarOutlined,
 	DashboardOutlined,
+	GlobalOutlined,
 	LogoutOutlined,
 	MenuFoldOutlined,
 	MenuUnfoldOutlined,
@@ -17,12 +19,14 @@ import {
 import {
 	Avatar,
 	Button,
+	Divider,
 	Dropdown,
 	Flex,
 	Layout,
 	Menu,
 	type MenuProps,
 	Space,
+	Tooltip,
 	Typography,
 	theme,
 } from "antd";
@@ -91,6 +95,7 @@ const MainLayout = () => {
 	const { selectedLang, toggleLang, t } = useLang();
 	const location = useLocation();
 	const navigate = useNavigate();
+	const { token } = theme.useToken();
 
 	// Define the menu items
 	const menuItems: MenuProps["items"] = [
@@ -141,12 +146,12 @@ const MainLayout = () => {
 		{
 			key: "profile",
 			icon: <UserOutlined />,
-			label: t("Profile"),
+			label: t("profile"),
 		},
 		{
 			key: "settings",
 			icon: <SettingOutlined />,
-			label: t("Settings"),
+			label: t("settings"),
 		},
 		{
 			type: "divider",
@@ -154,7 +159,7 @@ const MainLayout = () => {
 		{
 			key: "logout",
 			icon: <LogoutOutlined />,
-			label: t("Logout"),
+			label: t("logout"),
 		},
 	];
 
@@ -168,36 +173,99 @@ const MainLayout = () => {
 					display: "flex",
 					justifyContent: "space-between",
 					alignItems: "center",
-					boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+					boxShadow: token.boxShadow,
 					zIndex: 99,
+					padding: "0 1rem",
 				}}
 			>
-				<Space>
-					{/* Logo */}
-					<Logo />
-				</Space>
+				{/* Left side - Logo */}
+				<Logo />
 
-				{/* Theme control */}
-				<Button onClick={toggleTheme}>{selectedTheme}</Button>
+				{/* Right side - Controls and User */}
+				<Flex align="center" gap="middle">
+					{/* Theme and Language Controls */}
+					<Flex align="center" gap="small">
+						<Tooltip
+							title={
+								selectedTheme === "dark"
+									? t("Switch to Light Mode")
+									: t("Switch to Dark Mode")
+							}
+						>
+							<Button
+								type="text"
+								icon={<BulbOutlined />}
+								onClick={toggleTheme}
+								style={{
+									display: "flex",
+									alignItems: "center",
+									justifyContent: "center",
+									width: "2rem",
+									height: "2rem",
+									borderRadius: "6px",
+									color: token.colorTextSecondary,
+								}}
+							/>
+						</Tooltip>
 
-				{/* Lamng Control */}
-				<Button onClick={toggleLang}>{selectedLang}</Button>
+						<Tooltip
+							title={
+								selectedLang === "vi"
+									? t("Switch to English")
+									: t("Switch to Vietnamese")
+							}
+						>
+							<Button
+								type="text"
+								icon={<GlobalOutlined />}
+								onClick={toggleLang}
+								style={{
+									display: "flex",
+									alignItems: "center",
+									justifyContent: "center",
+									width: "2rem",
+									height: "2rem",
+									borderRadius: "6px",
+									color: token.colorTextSecondary,
+								}}
+							/>
+						</Tooltip>
+					</Flex>
 
-				{/* User Menu */}
-				<Dropdown
-					menu={{ items: userMenuItems }}
-					placement="bottomRight"
-					trigger={["click"]}
-				>
-					<Space size="middle" className="cursor-pointer">
-						<Avatar icon={<UserOutlined />} size="small" />
-						<Text>User Name</Text>
-					</Space>
-				</Dropdown>
+					{/* Divider */}
+					<Divider type="vertical" style={{ height: "1.5rem", margin: "0" }} />
+
+					{/* User Menu */}
+					<Dropdown
+						menu={{ items: userMenuItems }}
+						placement="bottomRight"
+						trigger={["click"]}
+					>
+						<Flex
+							align="center"
+							gap="small"
+							className="cursor-pointer"
+							style={{
+								padding: "0.25rem 0.5rem",
+								borderRadius: "6px",
+								transition: "background-color 0.2s",
+							}}
+						>
+							<Avatar
+								icon={<UserOutlined />}
+								size="small"
+								style={{ backgroundColor: token.colorPrimary }}
+							/>
+							<Text style={{ fontSize: "0.875rem", color: token.colorText }}>
+								User Name
+							</Text>
+						</Flex>
+					</Dropdown>
+				</Flex>
 			</Header>
 
 			{/* Sidebar and Content */}
-			<Layout style={{ margin: "0.5rem 0" }}>
+			<Layout style={{ margin: "0.25rem 0.25rem" }}>
 				{/* Sidebar */}
 				<Sider
 					trigger={null}
@@ -205,13 +273,9 @@ const MainLayout = () => {
 					collapsed={collapsed}
 					breakpoint="lg"
 					width={200}
-					style={{ borderRight: "1px solid #e5e7eb" }}
+					style={{ boxShadow: token.boxShadow, borderRadius: "10px" }}
 				>
-					<Flex
-						vertical
-						justify="space-between"
-						style={{ height: "100%", padding: "0 0.5rem" }}
-					>
+					<Flex vertical justify="space-between" style={{ height: "100%" }}>
 						<Menu
 							style={{ border: "none" }}
 							mode="inline"
@@ -219,7 +283,12 @@ const MainLayout = () => {
 							items={menuItems}
 							onClick={({ key }) => navigate(key)}
 						/>
-						<TriggerButton collapsed={collapsed} setCollapsed={setCollapsed} />
+						<div style={{ padding: "0.5rem" }}>
+							<TriggerButton
+								collapsed={collapsed}
+								setCollapsed={setCollapsed}
+							/>
+						</div>
 					</Flex>
 				</Sider>
 

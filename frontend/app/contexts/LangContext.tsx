@@ -1,12 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
+// Import translations
+import translations from "~/utils/translations";
 import {
 	getFromLocalStorage,
 	LocalStorageKeys,
 	setToLocalStorage,
 } from "~/utils/utils";
-
-// Import translations
-import translations from "~/utils/translations";
 
 // Define enum for the language selection
 export enum LangOption {
@@ -19,7 +18,7 @@ interface LangContextType {
 	selectedLang: LangOption;
 	toggleLang: () => void;
 	setLang: (lang: LangOption) => void;
-  t: (key: string) => string;
+	t: (key: string) => string;
 }
 
 // LangContext is the context that is used to store the language
