@@ -2,6 +2,9 @@ import { App as AntApp, ConfigProvider, theme } from "antd";
 import { LangOption, LangProvider, useLang } from "./LangContext";
 import { Theme, ThemeProvider, useTheme } from "./ThemeContext";
 
+import { message } from 'antd';
+import { useEffect } from "react";
+
 // Modern Light Theme Configuration
 const themeLightConfig = {
 	token: {
@@ -314,7 +317,17 @@ const themeDarkConfig = {
 
 // Define AppContent to use contexts after being wrapped by Context Providers
 const AppContent = ({ children }: { children: React.ReactNode }) => {
-	const { actualTheme } = useTheme();
+	const { selectedTheme, actualTheme } = useTheme();
+	const { selectedLang, t} = useLang();
+
+	useEffect(() => {
+		message.success(t("Language changed to " + selectedLang));
+	}, [selectedLang]);
+
+	useEffect(() => {
+		message.success(t("Theme changed to " + selectedTheme));
+	}, [selectedTheme]);
+
 	return (
 		<ConfigProvider
 			theme={actualTheme === Theme.Light ? themeLightConfig : themeDarkConfig}

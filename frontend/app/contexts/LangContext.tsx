@@ -1,6 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
+
 // Import translations
 import translations from "~/utils/translations";
+
+// Import utils for local storage
 import {
 	getFromLocalStorage,
 	LocalStorageKeys,
