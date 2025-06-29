@@ -1,9 +1,11 @@
+import { message } from "antd";
 import { createContext, useContext, useEffect, useState } from "react";
 import {
 	getFromLocalStorage,
 	LocalStorageKeys,
 	setToLocalStorage,
 } from "../utils/utils";
+import { useLang } from "./LangContext";
 
 // Define enum for the theme
 export enum Theme {
@@ -23,7 +25,6 @@ interface ThemeContextType {
 	selectedTheme: SelectedTheme;
 	actualTheme: ActualTheme;
 	toggleTheme: () => void;
-	setTheme: (theme: SelectedTheme) => void;
 }
 
 // ThemeContext is the context that is used to store the theme
@@ -45,17 +46,26 @@ const getSystemTheme = (): ActualTheme => {
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
+	const { t } = useLang();
 	// Define the state for the selected theme
 	// Initial value is the theme from the local storage
 	// It can be system, light, or dark
 	const [selectedTheme, setSelectedTheme] = useState<SelectedTheme>(
-		getFromLocalStorage(LocalStorageKeys.THEME) || Theme.System,
+		Theme.System,
 	);
+
+	// UseEffect to safely get the theme from the local storage
+	useEffect(() => {
+		const theme = getFromLocalStorage(LocalStorageKeys.THEME);
+		if (theme) {
+			setSelectedTheme(theme as SelectedTheme);
+		}
+	}, []);
 
 	// Define the state for the actual theme
 	// Initial value is the system theme
 	// It can be light or dark
-	const [actualTheme, setActualTheme] = useState<ActualTheme>(getSystemTheme());
+	const [actualTheme, setActualTheme] = useState<ActualTheme>(Theme.Light);
 
 	// Resolve system theme to actual light/dark
 	useEffect(() => {
@@ -70,16 +80,12 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 		setToLocalStorage(LocalStorageKeys.THEME, selectedTheme);
 	}, [selectedTheme]);
 
-	// Set the theme
-	const setTheme = (newTheme: SelectedTheme) => {
-		setSelectedTheme(newTheme);
-	};
-
 	// Toggle the theme
 	const toggleTheme = () => {
-		setSelectedTheme((prev) => {
-			return prev === Theme.Light ? Theme.Dark : Theme.Light;
-		});
+		const newTheme =
+			selectedTheme === Theme.Light ? Theme.Dark : Theme.Light;
+		setSelectedTheme(newTheme);
+		message.success(t(`Theme changed to ${newTheme}`));
 	};
 
 	// Return the ThemeProvider component
@@ -89,7 +95,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 				selectedTheme,
 				actualTheme,
 				toggleTheme,
-				setTheme,
 			}}
 		>
 			{children}

@@ -1,3 +1,4 @@
+import { message } from "antd";
 import { createContext, useContext, useEffect, useState } from "react";
 
 // Import translations
@@ -20,7 +21,6 @@ export enum LangOption {
 interface LangContextType {
 	selectedLang: LangOption;
 	toggleLang: () => void;
-	setLang: (lang: LangOption) => void;
 	t: (key: string) => string;
 }
 
@@ -35,9 +35,15 @@ export const LangProvider: React.FC<{ children: React.ReactNode }> = ({
 	// Define the state for the selected language
 	// Initial value is the language from the local storage
 	// It can be en or vi
-	const [selectedLang, setSelectedLang] = useState<LangOption>(
-		getFromLocalStorage(LocalStorageKeys.LANG) || LangOption.EN,
-	);
+	const [selectedLang, setSelectedLang] = useState<LangOption>(LangOption.EN);
+
+	// UseEffect to safely get the language from the local storage
+	useEffect(() => {
+		const lang = getFromLocalStorage(LocalStorageKeys.LANG);
+		if (lang) {
+			setSelectedLang(lang as LangOption);
+		}
+	}, []);
 
 	// Store the selected language in the local storage
 	useEffect(() => {
@@ -46,14 +52,14 @@ export const LangProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	// Define the function to toggle the language
 	const toggleLang = () => {
-		setSelectedLang((prev) =>
-			prev === LangOption.EN ? LangOption.VI : LangOption.EN,
-		);
-	};
-
-	// Define the function to set the language
-	const setLang = (lang: LangOption) => {
-		setSelectedLang(lang);
+		const newLang =
+			selectedLang === LangOption.EN ? LangOption.VI : LangOption.EN;
+		setSelectedLang(newLang);
+		if (newLang === LangOption.EN) {
+			message.success(t("Language changed to English"));
+		} else {
+			message.success(t("Ngôn ngữ đã thay đổi thành Tiếng Việt"));
+		}
 	};
 
 	// Define the function to translate the text
@@ -67,7 +73,6 @@ export const LangProvider: React.FC<{ children: React.ReactNode }> = ({
 			value={{
 				selectedLang,
 				toggleLang,
-				setLang,
 				t,
 			}}
 		>
