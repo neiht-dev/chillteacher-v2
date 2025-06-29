@@ -1,6 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { LocalStorageKeys, setToLocalStorage } from "~/utils/utils";
-import { getFromLocalStorage } from "~/utils/utils";
+import {
+	getFromLocalStorage,
+	LocalStorageKeys,
+	setToLocalStorage,
+} from "~/utils/utils";
+
+// Import translations
+import translations from "~/utils/translations";
 
 // Define enum for the language selection
 export enum LangOption {
@@ -13,6 +19,7 @@ interface LangContextType {
 	selectedLang: LangOption;
 	toggleLang: () => void;
 	setLang: (lang: LangOption) => void;
+  t: (key: string) => string;
 }
 
 // LangContext is the context that is used to store the language
@@ -37,12 +44,19 @@ export const LangProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	// Define the function to toggle the language
 	const toggleLang = () => {
-		setSelectedLang((prev) => (prev === LangOption.EN ? LangOption.VI : LangOption.EN));
+		setSelectedLang((prev) =>
+			prev === LangOption.EN ? LangOption.VI : LangOption.EN,
+		);
 	};
 
 	// Define the function to set the language
 	const setLang = (lang: LangOption) => {
 		setSelectedLang(lang);
+	};
+
+	// Define the function to translate the text
+	const t = (key: string): string => {
+		return translations[selectedLang][key] || key;
 	};
 
 	// Return the LangProvider component
@@ -52,6 +66,7 @@ export const LangProvider: React.FC<{ children: React.ReactNode }> = ({
 				selectedLang,
 				toggleLang,
 				setLang,
+				t,
 			}}
 		>
 			{children}

@@ -30,9 +30,11 @@ import {
 // Import React hooks and React Router
 import { useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
+
+// Import LangContext
 import { useLang } from "~/contexts/LangContext";
 
-// import useTheme
+// Import ThemeContext
 import { useTheme } from "~/contexts/ThemeContext";
 
 // Destructure Layout components from Ant Design
@@ -86,7 +88,7 @@ const Logo = () => {
 const MainLayout = () => {
 	const [collapsed, setCollapsed] = useState(false);
 	const { selectedTheme, toggleTheme } = useTheme();
-	const { selectedLang, toggleLang } = useLang();
+	const { selectedLang, toggleLang, t } = useLang();
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -95,42 +97,42 @@ const MainLayout = () => {
 		{
 			key: "/dashboard",
 			icon: <DashboardOutlined />,
-			label: "Dashboard",
+			label: t("Dashboard"),
 		},
 		{
 			key: "/students",
 			icon: <UserOutlined />,
-			label: "Students",
+			label: t("Students"),
 		},
 		{
 			key: "/teachers",
 			icon: <TeamOutlined />,
-			label: "Teachers",
+			label: t("Teachers"),
 		},
 		{
 			key: "/classes",
 			icon: <BookOutlined />,
-			label: "Classes",
+			label: t("Classes"),
 		},
 		{
 			key: "/classroom",
 			icon: <ReadOutlined />,
-			label: "Classroom",
+			label: t("Classroom"),
 		},
 		{
 			key: "/attendance",
 			icon: <CalendarOutlined />,
-			label: "Attendance",
+			label: t("Attendance"),
 		},
 		{
 			key: "/reports",
 			icon: <BarChartOutlined />,
-			label: "Reports",
+			label: t("Reports"),
 		},
 		{
 			key: "/settings",
 			icon: <SettingOutlined />,
-			label: "Settings",
+			label: t("Settings"),
 		},
 	];
 
@@ -139,12 +141,12 @@ const MainLayout = () => {
 		{
 			key: "profile",
 			icon: <UserOutlined />,
-			label: "Profile",
+			label: t("Profile"),
 		},
 		{
 			key: "settings",
 			icon: <SettingOutlined />,
-			label: "Settings",
+			label: t("Settings"),
 		},
 		{
 			type: "divider",
@@ -152,7 +154,7 @@ const MainLayout = () => {
 		{
 			key: "logout",
 			icon: <LogoutOutlined />,
-			label: "Logout",
+			label: t("Logout"),
 		},
 	];
 
