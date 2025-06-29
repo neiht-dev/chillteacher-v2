@@ -54,12 +54,12 @@ export const LangProvider: React.FC<{ children: React.ReactNode }> = ({
 	const toggleLang = () => {
 		const newLang =
 			selectedLang === LangOption.EN ? LangOption.VI : LangOption.EN;
-		setSelectedLang(newLang);
 		if (newLang === LangOption.EN) {
 			message.success(t("Language changed to English"));
 		} else {
 			message.success(t("Ngôn ngữ đã thay đổi thành Tiếng Việt"));
 		}
+		setSelectedLang(newLang);
 	};
 
 	// Define the function to translate the text
