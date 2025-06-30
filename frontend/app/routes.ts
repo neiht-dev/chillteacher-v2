@@ -26,5 +26,5 @@ export default [
 		index("./routes/tests/index.tsx"),
 		route(":testId", "./routes/tests/test.tsx"),
 	]),
-  route("test/escape-nesting-layout", "./routes/tests/escape-layout.tsx"),
+	route("test/escape-nesting-layout", "./routes/tests/escape-layout.tsx"),
 ] satisfies RouteConfig;
