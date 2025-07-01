@@ -33,6 +33,8 @@ import {
 // Import React hooks and React Router
 import { useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
+// Import Components
+import { Logo } from "~/components/UI/Logo";
 // Import AuthContext
 import { useAuth } from "~/contexts/AuthContext";
 // Import LangContext
@@ -63,27 +65,6 @@ const TriggerButton = ({
 			icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
 			onClick={() => setCollapsed(!collapsed)}
 		/>
-	);
-};
-
-// Define the Logo component
-const Logo = () => {
-	const { token } = theme.useToken();
-	return (
-		<Text>
-			<Text
-				style={{
-					color: token.colorPrimary,
-					fontSize: "20px",
-					fontWeight: "bold",
-				}}
-			>
-				Chill
-			</Text>
-			<Text style={{ color: "orange", fontSize: "20px", fontWeight: "bold" }}>
-				Teacher
-			</Text>
-		</Text>
 	);
 };
 

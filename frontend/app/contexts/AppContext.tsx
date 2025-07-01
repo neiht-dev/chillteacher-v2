@@ -6,6 +6,9 @@ import { Theme, ThemeProvider, useTheme } from "./ThemeContext";
 // Modern Light Theme Configuration
 const themeLightConfig = {
 	token: {
+		// Font
+		fontFamily: "Poppins, sans-serif",
+
 		// Primary Colors
 		colorPrimary: "#3b82f6", // Modern blue
 		colorPrimaryHover: "#2563eb",
@@ -159,6 +162,9 @@ const themeLightConfig = {
 // Modern Dark Theme Configuration
 const themeDarkConfig = {
 	token: {
+		// Font
+		fontFamily: "Poppins, sans-serif",
+
 		// Primary Colors
 		colorPrimary: "#60a5fa", // Lighter blue for dark mode
 		colorPrimaryHover: "#93c5fd",
