@@ -5,6 +5,7 @@ export const isBrowser = () => typeof window !== "undefined";
 export enum LocalStorageKeys {
 	THEME = "theme",
 	LANG = "lang",
+	USER = "user",
 }
 
 // Get a value from the local storage
@@ -22,5 +23,11 @@ export const getFromLocalStorage = <T>(key: LocalStorageKeys): T | null => {
 export const setToLocalStorage = <T>(key: LocalStorageKeys, value: T) => {
 	if (isBrowser()) {
 		localStorage.setItem(key, JSON.stringify(value));
+	}
+};
+
+export const removeFromLocalStorage = (key: LocalStorageKeys) => {
+	if (isBrowser()) {
+		localStorage.removeItem(key);
 	}
 };

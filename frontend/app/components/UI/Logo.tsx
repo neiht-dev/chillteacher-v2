@@ -8,6 +8,7 @@ export const Logo = () => {
 		<Text>
 			<Text
 				style={{
+					fontFamily: "Poppins, sans-serif",
 					color: token.colorPrimary,
 					fontSize: "20px",
 					fontWeight: "bold",
@@ -15,7 +16,14 @@ export const Logo = () => {
 			>
 				Chill
 			</Text>
-			<Text style={{ color: "orange", fontSize: "20px", fontWeight: "bold" }}>
+			<Text
+				style={{
+					fontFamily: "Poppins, sans-serif",
+					color: "orange",
+					fontSize: "20px",
+					fontWeight: "bold",
+				}}
+			>
 				Teacher
 			</Text>
 		</Text>

@@ -2,10 +2,8 @@
 import {
 	BarChartOutlined,
 	BookOutlined,
-	BulbOutlined,
 	CalendarOutlined,
 	DashboardOutlined,
-	GlobalOutlined,
 	LogoutOutlined,
 	MenuFoldOutlined,
 	MenuUnfoldOutlined,
@@ -14,7 +12,6 @@ import {
 	TeamOutlined,
 	UserOutlined,
 } from "@ant-design/icons";
-
 // Import Components from Ant Design
 import {
 	Avatar,
@@ -25,7 +22,6 @@ import {
 	Layout,
 	Menu,
 	type MenuProps,
-	Tooltip,
 	Typography,
 	theme,
 } from "antd";
@@ -33,14 +29,14 @@ import {
 // Import React hooks and React Router
 import { useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
+
 // Import Components
 import { Logo } from "~/components/UI/Logo";
-// Import AuthContext
+import { ThemeLangControl } from "~/components/UI/ThemeLangControl";
+
+// Import contexts
 import { useAuth } from "~/contexts/AuthContext";
-// Import LangContext
 import { useLang } from "~/contexts/LangContext";
-// Import ThemeContext
-import { useTheme } from "~/contexts/ThemeContext";
 
 // Destructure Layout components from Ant Design
 const { Header, Sider, Content } = Layout;
@@ -68,11 +64,10 @@ const TriggerButton = ({
 	);
 };
 
-// Define the MainLayout component
+// Define the MainLayout component\
 const MainLayout = () => {
 	const [collapsed, setCollapsed] = useState(false);
-	const { selectedTheme, toggleTheme } = useTheme();
-	const { selectedLang, toggleLang, t } = useLang();
+	const { t } = useLang();
 	const location = useLocation();
 	const navigate = useNavigate();
 	const { token } = theme.useToken();
@@ -125,22 +120,22 @@ const MainLayout = () => {
 	// Define the user menu items
 	const userMenuItems: MenuProps["items"] = [
 		{
-			key: "profile",
+			key: "/profile",
 			icon: <UserOutlined />,
-			label: t("profile"),
+			label: t("Profile"),
 		},
 		{
-			key: "settings",
+			key: "/settings",
 			icon: <SettingOutlined />,
-			label: t("settings"),
+			label: t("Settings"),
 		},
 		{
 			type: "divider",
 		},
 		{
-			key: "logout",
+			key: "/logout",
 			icon: <LogoutOutlined />,
-			label: t("logout"),
+			label: t("Logout"),
 		},
 	];
 
@@ -161,64 +156,17 @@ const MainLayout = () => {
 			>
 				{/* Left side - Logo */}
 				<Logo />
-
 				{/* Right side - Controls and User */}
 				<Flex align="center" gap="middle">
 					{/* Theme and Language Controls */}
-					<Flex align="center" gap="small">
-						<Tooltip
-							title={
-								selectedTheme === "dark"
-									? t("Switch to Light Mode")
-									: t("Switch to Dark Mode")
-							}
-						>
-							<Button
-								type="text"
-								icon={<BulbOutlined />}
-								onClick={toggleTheme}
-								style={{
-									display: "flex",
-									alignItems: "center",
-									justifyContent: "center",
-									width: "2rem",
-									height: "2rem",
-									borderRadius: "6px",
-									color: token.colorTextSecondary,
-								}}
-							/>
-						</Tooltip>
-
-						<Tooltip
-							title={
-								selectedLang === "vi"
-									? t("Switch to English")
-									: t("Switch to Vietnamese")
-							}
-						>
-							<Button
-								type="text"
-								icon={<GlobalOutlined />}
-								onClick={toggleLang}
-								style={{
-									display: "flex",
-									alignItems: "center",
-									justifyContent: "center",
-									width: "2rem",
-									height: "2rem",
-									borderRadius: "6px",
-									color: token.colorTextSecondary,
-								}}
-							/>
-						</Tooltip>
-					</Flex>
+					<ThemeLangControl />
 
 					{/* Divider */}
 					<Divider type="vertical" style={{ height: "1.5rem", margin: "0" }} />
 
 					{/* User Menu */}
 					<Dropdown
-						menu={{ items: userMenuItems }}
+						menu={{ items: userMenuItems, onClick: ({ key }) => navigate(key) }}
 						placement="bottomRight"
 						trigger={["click"]}
 					>
@@ -237,7 +185,13 @@ const MainLayout = () => {
 								size="small"
 								style={{ backgroundColor: token.colorPrimary }}
 							/>
-							<Text style={{ fontSize: "0.875rem", color: token.colorText }}>
+							<Text
+								style={{
+									fontSize: "0.875rem",
+									color: token.colorText,
+									whiteSpace: "nowrap",
+								}}
+							>
 								{user?.name}
 							</Text>
 						</Flex>

@@ -55,16 +55,21 @@ export const LangProvider: React.FC<{ children: React.ReactNode }> = ({
 		const newLang =
 			selectedLang === LangOption.EN ? LangOption.VI : LangOption.EN;
 		if (newLang === LangOption.EN) {
-			message.success(t("Language changed to English"));
+			message.success("Language changed to English");
 		} else {
-			message.success(t("Ngôn ngữ đã thay đổi thành Tiếng Việt"));
+			message.success("Ngôn ngữ đã thay đổi thành Tiếng Việt");
 		}
 		setSelectedLang(newLang);
 	};
 
 	// Define the function to translate the text
 	const t = (key: string): string => {
-		return translations[selectedLang][key] || key;
+		// Return translation or throw error if not found
+		const translation = translations[selectedLang][key];
+		if (translation) {
+			return translation;
+		}
+		throw new Error(`Translation not found for key: ${key}`);
 	};
 
 	// Return the LangProvider component

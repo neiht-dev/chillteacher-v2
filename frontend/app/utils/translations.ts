@@ -1,5 +1,6 @@
 const translations: Record<string, Record<string, string>> = {
 	en: {
+		// Main layout
 		Dashboard: "Dashboard",
 		Students: "Students",
 		Teachers: "Teachers",
@@ -19,8 +20,26 @@ const translations: Record<string, Record<string, string>> = {
 		"Switch to Vietnamese": "Switch to Vietnamese",
 		"Switch to English": "Switch to English",
 		"Switch to System": "Switch to System",
+
+		// Login page
+		"Welcome to ChillTeacher": "Welcome to ChillTeacher",
+		"Login to your account": "Login to your account",
+		"Don't have an account?": "Don't have an account?",
+		"Sign up here": "Sign up here",
+		"Invalid email or password": "Invalid email or password",
+		"Please enter your email": "Please enter your email",
+		"Please enter a valid email": "Please enter a valid email",
+		"Enter your email": "Enter your email",
+		"Enter your password": "Enter your password",
+		"Please enter your password": "Please enter your password",
+		"Password must be at least 6 characters":
+			"Password must be at least 6 characters",
+		Email: "Email",
+		Password: "Password",
+		Login: "Login",
 	},
 	vi: {
+		// Main layout
 		Dashboard: "Trang chủ",
 		Students: "Học sinh",
 		Teachers: "Giáo viên",
@@ -40,6 +59,23 @@ const translations: Record<string, Record<string, string>> = {
 		"Switch to Vietnamese": "Chuyển sang Tiếng Việt",
 		"Switch to English": "Chuyển sang Tiếng Anh",
 		"Switch to System": "Chuyển sang chế độ hệ thống",
+
+		// Login page
+		"Welcome to ChillTeacher": "Chào mừng đến với ChillTeacher",
+		"Login to your account": "Đăng nhập vào tài khoản của bạn",
+		"Don't have an account?": "Không có tài khoản?",
+		"Sign up here": "Đăng ký ở đây",
+		"Invalid email or password": "Email hoặc mật khẩu không hợp lệ",
+		"Please enter your email": "Vui lòng nhập email của bạn",
+		"Please enter a valid email": "Vui lòng nhập email hợp lệ",
+		"Enter your email": "Nhập email của bạn",
+		"Enter your password": "Nhập mật khẩu của bạn",
+		"Please enter your password": "Vui lòng nhập mật khẩu của bạn",
+		"Password must be at least 6 characters":
+			"Mật khẩu phải có ít nhất 6 ký tự",
+		Email: "Email",
+		Password: "Mật khẩu",
+		Login: "Đăng nhập",
 	},
 };
 

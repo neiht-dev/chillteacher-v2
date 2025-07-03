@@ -3,6 +3,7 @@ import {
 	isRouteErrorResponse,
 	Links,
 	Meta,
+	Outlet,
 	Scripts,
 	ScrollRestoration,
 } from "react-router";
@@ -47,9 +48,8 @@ export async function clientLoader() {
 	return {};
 }
 
-import MainLayout from "./components/Layout/MainLayout";
 export default function App() {
-	return <MainLayout />;
+	return <Outlet />;
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

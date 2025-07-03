@@ -7,7 +7,7 @@ import { Theme, ThemeProvider, useTheme } from "./ThemeContext";
 const themeLightConfig = {
 	token: {
 		// Font
-		fontFamily: "Poppins, sans-serif",
+		fontFamily: "Inter, sans-serif",
 
 		// Primary Colors
 		colorPrimary: "#3b82f6", // Modern blue
@@ -54,6 +54,7 @@ const themeLightConfig = {
 		// Border Radius
 		borderRadius: 8,
 		borderRadiusLG: 12,
+		borderRadiusXL: 16,
 		borderRadiusSM: 6,
 		borderRadiusXS: 4,
 
@@ -106,7 +107,7 @@ const themeLightConfig = {
 			paddingInlineSM: 12,
 		},
 		Card: {
-			borderRadius: 12,
+			borderRadius: 16,
 			borderColor: "#e2e8f0",
 			headerBg: "#ffffff",
 			headerFontSize: 16,
@@ -163,7 +164,7 @@ const themeLightConfig = {
 const themeDarkConfig = {
 	token: {
 		// Font
-		fontFamily: "Poppins, sans-serif",
+		fontFamily: "Inter, sans-serif",
 
 		// Primary Colors
 		colorPrimary: "#60a5fa", // Lighter blue for dark mode
@@ -208,8 +209,9 @@ const themeDarkConfig = {
 		colorInfoBorder: "#2563eb",
 
 		// Border Radius
-		borderRadius: 8,
+		borderRadius: 16,
 		borderRadiusLG: 12,
+		borderRadiusXL: 16,
 		borderRadiusSM: 6,
 		borderRadiusXS: 4,
 
@@ -261,7 +263,7 @@ const themeDarkConfig = {
 			paddingInlineSM: 12,
 		},
 		Card: {
-			borderRadius: 12,
+			borderRadius: 16,
 			borderColor: "#475569",
 			headerBg: "#1e293b",
 			headerFontSize: 16,
