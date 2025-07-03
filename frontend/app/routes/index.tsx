@@ -1,9 +1,7 @@
-import type { Route } from "./+types/index";
+import { Navigate } from "react-router";
 
-export function meta({}: Route.MetaArgs) {
-	return [{ title: "Dashboard" }, { description: "Dashboard" }];
-}
+const Home = () => {
+	return <Navigate to="/dashboard" />;
+};
 
-export default function Home() {
-	return <div>Home</div>;
-}
+export default Home;

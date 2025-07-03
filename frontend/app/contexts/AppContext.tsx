@@ -329,7 +329,10 @@ const AppContent = ({ children }: { children: React.ReactNode }) => {
 		<ConfigProvider
 			theme={actualTheme === Theme.Light ? themeLightConfig : themeDarkConfig}
 		>
-			<AntApp>{children}</AntApp>
+			<AntApp>
+				{/* Add theme name for custom styling */}
+				<div className={actualTheme}>{children}</div>
+			</AntApp>
 		</ConfigProvider>
 	);
 };

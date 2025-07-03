@@ -150,7 +150,7 @@ const MainLayout = () => {
 					justifyContent: "space-between",
 					alignItems: "center",
 					boxShadow: token.boxShadow,
-					zIndex: 99,
+					zIndex: 1,
 					padding: "0 1rem",
 				}}
 			>
@@ -212,7 +212,12 @@ const MainLayout = () => {
 				>
 					<Flex vertical justify="space-between" style={{ height: "100%" }}>
 						<Menu
-							style={{ border: "none" }}
+							style={{
+								border: "none",
+								display: "flex",
+								flexDirection: "column",
+								gap: "0.5rem",
+							}}
 							mode="inline"
 							selectedKeys={[location.pathname]}
 							items={menuItems}
@@ -228,7 +233,14 @@ const MainLayout = () => {
 				</Sider>
 
 				{/* Content */}
-				<Content style={{ padding: "1rem" }}>
+				<Content
+					style={{
+						padding: "1rem",
+						height: "calc(100vh - 4rem)",
+						overflow: "auto",
+					}}
+					className="custom-scrollbar"
+				>
 					<Outlet />
 				</Content>
 			</Layout>
