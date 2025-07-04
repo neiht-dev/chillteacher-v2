@@ -5,7 +5,7 @@ const { Text } = Typography;
 export const Logo = () => {
 	const { token } = theme.useToken();
 	return (
-		<Text>
+		<Text style={{ whiteSpace: "nowrap" }}>
 			<Text
 				style={{
 					fontFamily: "Poppins, sans-serif",

@@ -1,7 +1,10 @@
 import { Navigate } from "react-router";
+import LandingPage from "~/components/landing/LandingPage";
+import { useAuth } from "~/contexts/AuthContext";
 
 const Home = () => {
-	return <Navigate to="/dashboard" />;
+	const { isLoggedIn } = useAuth();
+	return isLoggedIn ? <Navigate to="/dashboard" /> : <LandingPage />;
 };
 
 export default Home;

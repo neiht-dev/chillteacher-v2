@@ -1,4 +1,4 @@
-const translations: Record<string, Record<string, string>> = {
+const loginTranslations: Record<string, Record<string, string>> = {
 	en: {
 		// Main layout
 		Dashboard: "Dashboard",
@@ -112,4 +112,4 @@ const translations: Record<string, Record<string, string>> = {
 	},
 };
 
-export default translations;
+export default loginTranslations;

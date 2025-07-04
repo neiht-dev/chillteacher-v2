@@ -12,11 +12,13 @@ export default [
 	// 404
 	route("*", "./routes/404.tsx"),
 
+	// Home route
+	index("./routes/index.tsx"),
+
 	// Protected routes
 	layout("./layouts/protected-layout.tsx", [
 		// School management routes
 		layout("./layouts/main-layout.tsx", [
-			index("./routes/index.tsx"),
 			route("schools", "./routes/schools.tsx"),
 			route("dashboard", "./routes/dashboard.tsx"),
 			route("students", "./routes/students.tsx"),

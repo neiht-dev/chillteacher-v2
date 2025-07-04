@@ -212,22 +212,29 @@ const MainLayout = () => {
 				>
 					<Flex vertical style={{ height: "100%" }}>
 						<Link to="/schools" style={{ textDecoration: "none" }}>
-							<Flex vertical justify="space-between" align="center" style={{ padding: "1rem" }}>
+							<Flex
+								vertical
+								justify="space-between"
+								align="center"
+								style={{ padding: "1rem" }}
+							>
 								<Avatar
 									size={60}
 									src="https://img.freepik.com/premium-vector/university-college-school-crests-logo-emblem-vector-template_441059-1011.jpg?semt=ais_hybrid&w=740"
 								/>
 								<Text
 									strong
-									style={{ 
-										fontSize: "1rem", 
+									style={{
+										fontSize: "1rem",
 										whiteSpace: "nowrap",
 										opacity: collapsed ? 0 : 1,
-										transform: collapsed ? "translateY(-10px)" : "translateY(0)",
+										transform: collapsed
+											? "translateY(-10px)"
+											: "translateY(0)",
 										transition: "opacity 0.3s ease, transform 0.3s ease",
 										height: collapsed ? 0 : "auto",
 										overflow: "hidden",
-										margin: collapsed ? 0 : "0.5rem 0"
+										margin: collapsed ? 0 : "0.5rem 0",
 									}}
 								>
 									School Name

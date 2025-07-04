@@ -17,6 +17,7 @@ interface User {
 type AuthContextType = {
 	user: User | null;
 	isLoading: boolean;
+	isLoggedIn: boolean;
 	signup: (name: string, email: string, password: string) => Promise<void>;
 	login: (email: string, password: string) => Promise<void>;
 	logout: () => void;
@@ -27,6 +28,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	const [user, setUser] = useState<User | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	// Check for stored user on app start
 	useEffect(() => {
@@ -41,6 +43,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	// Mock signup
 	const signup = async (name: string, email: string, _password: string) => {
 		setIsLoading(true);
+		setIsLoggedIn(false);
 		try {
 			await new Promise((resolve) => setTimeout(resolve, 1000));
 			console.log("signup", name, email, _password);
@@ -55,12 +58,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 			setToLocalStorage(LocalStorageKeys.USER, mockUser);
 		} finally {
 			setIsLoading(false);
+			setIsLoggedIn(true);
 		}
 	};
 
 	// Mock login
 	const login = async (email: string, password: string) => {
 		setIsLoading(true);
+		setIsLoggedIn(false);
 		try {
 			// Mock API call - replace with real authentication
 			await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -79,16 +84,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 			}
 		} finally {
 			setIsLoading(false);
+			setIsLoggedIn(true);
 		}
 	};
 
 	const logout = () => {
 		setUser(null);
+		setIsLoggedIn(false);
 		removeFromLocalStorage(LocalStorageKeys.USER);
 	};
 
 	return (
-		<AuthContext.Provider value={{ user, isLoading, signup, login, logout }}>
+		<AuthContext.Provider
+			value={{ user, isLoading, isLoggedIn, signup, login, logout }}
+		>
 			{children}
 		</AuthContext.Provider>
 	);

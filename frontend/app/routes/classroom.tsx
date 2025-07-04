@@ -1,7 +1,5 @@
 import {
 	BellOutlined,
-	BookOutlined,
-	CalendarOutlined,
 	CheckCircleOutlined,
 	ClockCircleOutlined,
 	CloseCircleOutlined,

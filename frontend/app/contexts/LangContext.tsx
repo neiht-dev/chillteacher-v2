@@ -2,7 +2,7 @@ import { message } from "antd";
 import { createContext, useContext, useEffect, useState } from "react";
 
 // Import translations
-import translations from "~/utils/translations";
+import translations from "~/utils/translations/translations";
 
 // Import utils for local storage
 import {
