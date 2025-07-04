@@ -17,6 +17,7 @@ export default [
 		// School management routes
 		layout("./layouts/main-layout.tsx", [
 			index("./routes/index.tsx"),
+			route("schools", "./routes/schools.tsx"),
 			route("dashboard", "./routes/dashboard.tsx"),
 			route("students", "./routes/students.tsx"),
 			route("teachers", "./routes/teachers.tsx"),

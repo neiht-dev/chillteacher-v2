@@ -387,7 +387,7 @@ const StudentAttendance: React.FC = () => {
 					<Row gutter={[16, 16]}>
 						{/* Calendar View */}
 						<Col xs={24} lg={16}>
-							<Card title="Attendance Calendar" style={{ height: 600 }}>
+							<Card title="Attendance Calendar">
 								<Calendar
 									dateCellRender={dateCellRender}
 									onSelect={onDateSelect}
@@ -398,7 +398,7 @@ const StudentAttendance: React.FC = () => {
 
 						{/* Recent Records */}
 						<Col xs={24} lg={8}>
-							<Card title="Recent Attendance" style={{ height: 600 }}>
+							<Card title="Recent Attendance">
 								<List
 									dataSource={getRecentAttendance()}
 									renderItem={(record) => (

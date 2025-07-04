@@ -28,7 +28,7 @@ import {
 
 // Import React hooks and React Router
 import { useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router";
+import { Link, Outlet, useLocation, useNavigate } from "react-router";
 
 // Import Components
 import { Logo } from "~/components/UI/Logo";
@@ -210,25 +210,52 @@ const MainLayout = () => {
 					width={200}
 					style={{ boxShadow: token.boxShadow, borderRadius: "10px" }}
 				>
-					<Flex vertical justify="space-between" style={{ height: "100%" }}>
-						<Menu
-							style={{
-								border: "none",
-								display: "flex",
-								flexDirection: "column",
-								gap: "0.5rem",
-							}}
-							mode="inline"
-							selectedKeys={[location.pathname]}
-							items={menuItems}
-							onClick={({ key }) => navigate(key)}
-						/>
-						<div style={{ padding: "0.5rem" }}>
-							<TriggerButton
-								collapsed={collapsed}
-								setCollapsed={setCollapsed}
+					<Flex vertical style={{ height: "100%" }}>
+						<Link to="/schools" style={{ textDecoration: "none" }}>
+							<Flex vertical justify="space-between" align="center" style={{ padding: "1rem" }}>
+								<Avatar
+									size={60}
+									src="https://img.freepik.com/premium-vector/university-college-school-crests-logo-emblem-vector-template_441059-1011.jpg?semt=ais_hybrid&w=740"
+								/>
+								<Text
+									strong
+									style={{ 
+										fontSize: "1rem", 
+										whiteSpace: "nowrap",
+										opacity: collapsed ? 0 : 1,
+										transform: collapsed ? "translateY(-10px)" : "translateY(0)",
+										transition: "opacity 0.3s ease, transform 0.3s ease",
+										height: collapsed ? 0 : "auto",
+										overflow: "hidden",
+										margin: collapsed ? 0 : "0.5rem 0"
+									}}
+								>
+									School Name
+								</Text>
+								<Divider style={{ margin: "0.5rem" }} />
+							</Flex>
+						</Link>
+
+						<Flex vertical justify="space-between" style={{ height: "100%" }}>
+							<Menu
+								style={{
+									border: "none",
+									display: "flex",
+									flexDirection: "column",
+									gap: "0.5rem",
+								}}
+								mode="inline"
+								selectedKeys={[location.pathname]}
+								items={menuItems}
+								onClick={({ key }) => navigate(key)}
 							/>
-						</div>
+							<div style={{ padding: "0.5rem" }}>
+								<TriggerButton
+									collapsed={collapsed}
+									setCollapsed={setCollapsed}
+								/>
+							</div>
+						</Flex>
 					</Flex>
 				</Sider>
 
