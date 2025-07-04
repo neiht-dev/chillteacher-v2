@@ -36,6 +36,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 		console.log(storedUser);
 		if (storedUser) {
 			setUser(storedUser);
+			setIsLoggedIn(true);
+		} else {
+			setIsLoggedIn(false);
 		}
 		setIsLoading(false);
 	}, []);

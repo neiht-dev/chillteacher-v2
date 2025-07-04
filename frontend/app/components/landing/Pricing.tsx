@@ -127,8 +127,8 @@ const Pricing = () => {
 					gutter={[token.margin, token.margin]}
 					style={{ marginBottom: token.marginXL * 2 }}
 				>
-					{plans.map((plan) => (
-						<Col xs={24} md={8} key={plan.name}>
+					{plans.map((plan, index) => (
+						<Col xs={24} md={8} key={index.toString()}>
 							<Card
 								hoverable
 								style={{
@@ -237,9 +237,9 @@ const Pricing = () => {
 								</Button>
 								<Divider style={{ margin: `${token.marginLG}px 0` }} />
 								<Flex vertical gap={token.marginSM}>
-									{plan.features.map((feature) => (
+									{plan.features.map((feature, index) => (
 										<Flex
-											key={plan.name}
+											key={index.toString()}
 											align="center"
 											style={{ color: token.colorText, fontSize: 16 }}
 										>
@@ -249,9 +249,9 @@ const Pricing = () => {
 											{feature}
 										</Flex>
 									))}
-									{plan.notIncluded.map((feature) => (
+									{plan.notIncluded.map((feature, index) => (
 										<Flex
-											key={plan.name}
+											key={index.toString()}
 											align="center"
 											style={{
 												color: token.colorTextDescription,
