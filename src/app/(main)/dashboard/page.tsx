@@ -1,7 +1,7 @@
 'use client';
 
 import {
-	ArrowDownOutlined,
+	// ArrowDownOutlined,
 	ArrowUpOutlined,
 	BookOutlined,
 	CalendarOutlined,
@@ -98,7 +98,7 @@ const Dashboard: React.FC = () => {
 		<div>
 			<div style={{ marginBottom: 24 }}>
 				<Title level={2}>Dashboard</Title>
-				<Text type="secondary">Welcome back! Here's what's happening at your school.</Text>
+				<Text type="secondary">{`Welcome back! Here's what's happening at your school.`}</Text>
 			</div>
 
 			{/* Key Statistics */}
@@ -107,7 +107,7 @@ const Dashboard: React.FC = () => {
 					<Card>
 						<Statistic
 							title="Total Students"
-							value={(1, 245)}
+							value={1245}
 							prefix={<UserOutlined style={{ color: '#1890ff' }} />}
 							suffix={
 								<div style={{ fontSize: 14, color: '#52c41a' }}>

@@ -5,7 +5,7 @@ import {
 	DollarOutlined,
 	EditOutlined,
 	EyeOutlined,
-	HomeOutlined,
+	// HomeOutlined,
 	MailOutlined,
 	PhoneOutlined,
 	PlusOutlined,

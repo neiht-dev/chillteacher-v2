@@ -10,6 +10,8 @@ import {
 } from '@ant-design/icons';
 import { Col, Flex, Row, Typography, theme } from 'antd';
 
+import Link from 'next/link';
+
 const { Paragraph } = Typography;
 
 const Footer = () => {
@@ -90,7 +92,7 @@ const Footer = () => {
 							Sản phẩm
 						</div>
 						<Flex vertical gap={token.marginSM}>
-							<a
+							<Link
 								href="/"
 								style={{
 									color: token.colorTextDescription,
@@ -98,8 +100,8 @@ const Footer = () => {
 								}}
 							>
 								Tính năng
-							</a>
-							<a
+							</Link>
+							<Link
 								href="/"
 								style={{
 									color: token.colorTextDescription,
@@ -107,8 +109,8 @@ const Footer = () => {
 								}}
 							>
 								Giá cả
-							</a>
-							<a
+							</Link>
+							<Link
 								href="/"
 								style={{
 									color: token.colorTextDescription,
@@ -116,8 +118,8 @@ const Footer = () => {
 								}}
 							>
 								Dùng thử miễn phí
-							</a>
-							<a
+							</Link>
+							<Link
 								href="/"
 								style={{
 									color: token.colorTextDescription,
@@ -125,8 +127,8 @@ const Footer = () => {
 								}}
 							>
 								Ứng dụng di động
-							</a>
-							<a
+							</Link>
+							<Link
 								href="/"
 								style={{
 									color: token.colorTextDescription,
@@ -134,8 +136,8 @@ const Footer = () => {
 								}}
 							>
 								API
-							</a>
-							<a
+							</Link>
+							<Link
 								href="/"
 								style={{
 									color: token.colorTextDescription,
@@ -143,7 +145,7 @@ const Footer = () => {
 								}}
 							>
 								Tích hợp
-							</a>
+							</Link>
 						</Flex>
 					</Col>
 					{/* Tài nguyên */}
@@ -158,7 +160,7 @@ const Footer = () => {
 							Tài nguyên
 						</div>
 						<Flex vertical gap={token.marginSM}>
-							<a
+							<Link
 								href="/"
 								style={{
 									color: token.colorTextDescription,
@@ -166,8 +168,8 @@ const Footer = () => {
 								}}
 							>
 								Trung tâm trợ giúp
-							</a>
-							<a
+							</Link>
+							<Link
 								href="/"
 								style={{
 									color: token.colorTextDescription,
@@ -175,8 +177,8 @@ const Footer = () => {
 								}}
 							>
 								Blog
-							</a>
-							<a
+							</Link>
+							<Link
 								href="/"
 								style={{
 									color: token.colorTextDescription,
@@ -184,8 +186,8 @@ const Footer = () => {
 								}}
 							>
 								Hội thảo trên web
-							</a>
-							<a
+							</Link>
+							<Link
 								href="/"
 								style={{
 									color: token.colorTextDescription,
@@ -193,8 +195,8 @@ const Footer = () => {
 								}}
 							>
 								Mẫu
-							</a>
-							<a
+							</Link>
+							<Link
 								href="/"
 								style={{
 									color: token.colorTextDescription,
@@ -202,8 +204,8 @@ const Footer = () => {
 								}}
 							>
 								Cộng đồng
-							</a>
-							<a
+							</Link>
+							<Link
 								href="/"
 								style={{
 									color: token.colorTextDescription,
@@ -211,7 +213,7 @@ const Footer = () => {
 								}}
 							>
 								Nghiên cứu điển hình
-							</a>
+							</Link>
 						</Flex>
 					</Col>
 					{/* Company */}
@@ -226,7 +228,7 @@ const Footer = () => {
 							Công ty
 						</div>
 						<Flex vertical gap={token.marginSM}>
-							<a
+							<Link
 								href="/"
 								style={{
 									color: token.colorTextDescription,
@@ -234,8 +236,8 @@ const Footer = () => {
 								}}
 							>
 								Về chúng tôi
-							</a>
-							<a
+							</Link>
+							<Link
 								href="/"
 								style={{
 									color: token.colorTextDescription,
@@ -243,8 +245,8 @@ const Footer = () => {
 								}}
 							>
 								Nghề nghiệp
-							</a>
-							<a
+							</Link>
+							<Link
 								href="/"
 								style={{
 									color: token.colorTextDescription,
@@ -252,8 +254,8 @@ const Footer = () => {
 								}}
 							>
 								Báo chí
-							</a>
-							<a
+							</Link>
+							<Link
 								href="/"
 								style={{
 									color: token.colorTextDescription,
@@ -261,8 +263,8 @@ const Footer = () => {
 								}}
 							>
 								Đối tác
-							</a>
-							<a
+							</Link>
+							<Link
 								href="/"
 								style={{
 									color: token.colorTextDescription,
@@ -270,8 +272,8 @@ const Footer = () => {
 								}}
 							>
 								Liên hệ
-							</a>
-							<a
+							</Link>
+							<Link
 								href="/"
 								style={{
 									color: token.colorTextDescription,
@@ -279,7 +281,7 @@ const Footer = () => {
 								}}
 							>
 								Trạng thái
-							</a>
+							</Link>
 						</Flex>
 					</Col>
 				</Row>

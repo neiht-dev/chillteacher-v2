@@ -10,7 +10,7 @@ import {
 	UsergroupAddOutlined,
 } from '@ant-design/icons';
 import {
-	Avatar,
+	// Avatar,
 	Button,
 	Card,
 	Col,
@@ -20,7 +20,7 @@ import {
 	List,
 	Modal,
 	message,
-	Progress,
+	// Progress,
 	Row,
 	Select,
 	Space,

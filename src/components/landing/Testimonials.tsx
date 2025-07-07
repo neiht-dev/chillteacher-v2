@@ -157,7 +157,7 @@ const Testimonials = () => {
 										fontStyle: 'italic',
 									}}
 								>
-									"{testimonial.content}"
+									&quot;{testimonial.content}&quot;
 								</Paragraph>
 
 								{/* Author */}
