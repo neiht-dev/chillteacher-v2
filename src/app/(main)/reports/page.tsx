@@ -65,7 +65,9 @@ const Reports: React.FC = () => {
 	const [reportType, setReportType] = useState<string>('attendance');
 	const [selectedClass, setSelectedClass] = useState<string>('');
 	const [selectedSubject, setSelectedSubject] = useState<string>('');
-	const [dateRange, setDateRange] = useState<[dayjs.Dayjs, dayjs.Dayjs]>([
+	// TODO: fix this bug
+	// const [dateRange, setDateRange] = useState<[dayjs.Dayjs, dayjs.Dayjs]>([
+	const [dateRange, setDateRange] = useState<[dayjs.Dayjs | null, dayjs.Dayjs | null]>([
 		dayjs().subtract(30, 'days'),
 		dayjs(),
 	]);
