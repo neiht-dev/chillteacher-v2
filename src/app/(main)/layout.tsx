@@ -83,42 +83,42 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
 		{
 			key: '/dashboard',
 			icon: <DashboardOutlined />,
-			label: t('Dashboard'),
+			label: <Link href="/dashboard">{t('Dashboard')}</Link>,
 		},
 		{
 			key: '/students',
 			icon: <UserOutlined />,
-			label: t('Students'),
+			label: <Link href="/students">{t('Students')}</Link>,
 		},
 		{
 			key: '/teachers',
 			icon: <TeamOutlined />,
-			label: t('Teachers'),
+			label: <Link href="/teachers">{t('Teachers')}</Link>,
 		},
 		{
 			key: '/classes',
 			icon: <BookOutlined />,
-			label: t('Classes'),
+			label: <Link href="/classes">{t('Classes')}</Link>,
 		},
 		{
 			key: '/classroom',
 			icon: <ReadOutlined />,
-			label: t('Classroom'),
+			label: <Link href="/classroom">{t('Classroom')}</Link>,
 		},
 		{
 			key: '/attendance',
 			icon: <CalendarOutlined />,
-			label: t('Attendance'),
+			label: <Link href="/attendance">{t('Attendance')}</Link>,
 		},
 		{
 			key: '/reports',
 			icon: <BarChartOutlined />,
-			label: t('Reports'),
+			label: <Link href="/reports">{t('Reports')}</Link>,
 		},
 		{
 			key: '/settings',
 			icon: <SettingOutlined />,
-			label: t('Settings'),
+			label: <Link href="/settings">{t('Settings')}</Link>,
 		},
 	];
 
@@ -263,7 +263,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
 									mode="inline"
 									selectedKeys={[pathname]}
 									items={menuItems}
-									onClick={({ key }) => router.push(key)}
+									// onClick={({ key }) => router.push(key)}
 								/>
 								<div style={{ padding: '0.5rem' }}>
 									<TriggerButton collapsed={collapsed} setCollapsed={setCollapsed} />
