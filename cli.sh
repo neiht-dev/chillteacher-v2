@@ -13,13 +13,10 @@ if [ -f ".env" ]; then
 fi
 
 # Colors
-BLUE='\033[0;34m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 RED='\033[0;31m'
-CYAN='\033[0;36m'
-MAGENTA='\033[0;35m'
-BOLD='\033[1m'
 NC='\033[0m' # No Color
 
 # --- Helper Functions ---
@@ -97,27 +94,115 @@ deploy_test_conn() {
     ssh -p "$SSH_DEPLOY_PORT" "${DEPLOY_USER}@${SERVER_IP}" "echo -e '${GREEN}✓ SSH connection successful!${NC}'"
 }
 
-deploy_install_docker() {
-    echo -e "${CYAN}Installing Docker on the remote server...${NC}"
+deploy_app_with_docker() {
+    echo -e "${CYAN}Initiating Docker deployment to server...${NC}"
     _get_deploy_params
-    local SSH_COMMAND="ssh -p ${SSH_DEPLOY_PORT} ${DEPLOY_USER}@${SERVER_IP}"
 
-    echo -e "${YELLOW}Running commands on ${DEPLOY_USER}@${SERVER_IP}...${NC}"
-    $SSH_COMMAND "sudo apt-get update && sudo apt-get install -y ca-certificates curl gnupg"
-    $SSH_COMMAND "sudo install -m 0755 -d /etc/apt/keyrings"
-    $SSH_COMMAND "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg"
-    $SSH_COMMAND "sudo chmod a+r /etc/apt/keyrings/docker.gpg"
-    $SSH_COMMAND "echo \"deb [arch=\"$(dpkg --print-architecture)\" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \"$(lsb_release -cs)\" stable\" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null"
-    $SSH_COMMAND "sudo apt-get update && sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin"
-    $SSH_COMMAND "sudo usermod -aG docker ${DEPLOY_USER}"
-    $SSH_COMMAND "sudo systemctl enable docker.service"
-    $SSH_COMMAND "sudo systemctl enable containerd.service"
+    local SERVER_IP="${SERVER_IP}"
+    local USERNAME="${DEPLOY_USER}"
+    local SSH_PORT="${SSH_DEPLOY_PORT}"
 
-    echo -e "${GREEN}✓ Docker installation commands sent. Please log out and log back into your SSH session on the server for group changes to take effect.${NC}"
+    local REMOTE_DIR="/opt/chillteacher"
+    local PROJECT_ROOT="$(pwd)"
+
+    # Setup SSH Control Master for connection reuse
+    local SSH_CONTROL_PATH="/tmp/ssh_mux_%h_%p_%r"
+    local SSH_OPTS="-o ControlMaster=auto -o ControlPath=$SSH_CONTROL_PATH -o ControlPersist=1h -o StrictHostKeyChecking=accept-new"
+    local SSH_CMD="ssh $SSH_OPTS -p $SSH_PORT $USERNAME@$SERVER_IP"
+    local SCP_CMD="scp -P $SSH_PORT $SSH_OPTS"
+
+    echo -e "${BLUE}=== DEPLOYING CHILLTEACHER V2 ===${NC}"
+    echo -e "${YELLOW}Server IP: ${SERVER_IP}${NC}"
+    echo -e "${YELLOW}Username: ${USERNAME}${NC}"
+    echo -e "${YELLOW}SSH Port: ${SSH_PORT}${NC}"
+    echo -e "${YELLOW}Remote Directory: ${REMOTE_DIR}${NC}"
+    echo ""
+
+    # Create remote directory
+    echo -e "${BLUE}Creating remote directory on server...${NC}"
+    $SSH_CMD "mkdir -p $REMOTE_DIR"
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}Error creating remote directory!${NC}"
+        exit 1
+    fi
+    echo -e "${GREEN}✓ Remote directory created successfully!${NC}"
+
+    # Build Docker image locally
+    echo -e "${BLUE}Building Docker image locally...${NC}"
+    docker build -t chillteacher-v2-app:latest $PROJECT_ROOT
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}Error building Docker image!${NC}"
+        exit 1
+    fi
+    echo -e "${GREEN}✓ Docker image built successfully!${NC}"
+
+    # Save Docker image to a tar file
+    echo -e "${BLUE}Saving Docker image to tar file...${NC}"
+    local_tar_path="$PROJECT_ROOT/chillteacher-v2-app.tar.gz"
+    docker save chillteacher-v2-app:latest | gzip > "$local_tar_path"
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}Error saving Docker image!${NC}"
+        exit 1
+    fi
+    echo -e "${GREEN}✓ Docker image saved successfully!${NC}"
+
+    # Copy files to server
+    echo -e "${BLUE}Copying files to server...${NC}"
+    $SCP_CMD "$local_tar_path" "$USERNAME@$SERVER_IP:$REMOTE_DIR/chillteacher-image.tar.gz"
+    $SCP_CMD "$PROJECT_ROOT/docker-compose.yml" "$USERNAME@$SERVER_IP:$REMOTE_DIR/"
+    $SCP_CMD "$PROJECT_ROOT/Caddyfile" "$USERNAME@$SERVER_IP:$REMOTE_DIR/"
+    $SCP_CMD "$PROJECT_ROOT/setup-server.sh" "$USERNAME@$SERVER_IP:$REMOTE_DIR/"
+
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}Error copying files to server!${NC}"
+        exit 1
+    fi
+    echo -e "${GREEN}✓ Files copied successfully!${NC}"
+
+    # Make setup-server.sh executable on remote
+    echo -e "${BLUE}Making setup-server.sh executable on remote...${NC}"
+    $SSH_CMD "chmod +x $REMOTE_DIR/setup-server.sh"
+
+    # Run setup-server.sh on remote
+    echo -e "${BLUE}Running setup-server.sh on remote server...${NC}"
+    $SSH_CMD "cd $REMOTE_DIR && ./setup-server.sh"
+
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}Error running setup script on server!${NC}"
+        exit 1
+    fi
+    echo -e "${GREEN}✓ Server setup and deployment initiated successfully!${NC}"
+
+    # Clean up local tar file
+    echo -e "${BLUE}Cleaning up local tar file...${NC}"
+    rm -f "$local_tar_path"
+
+    # Close SSH Control Master connection
+    echo -e "${BLUE}Closing SSH connection...${NC}"
+    ssh $SSH_OPTS -p $SSH_PORT -O exit $USERNAME@$SERVER_IP
+
+    echo -e "${GREEN}=== DEPLOYMENT COMPLETE! ===${NC}"
+    echo -e "${YELLOW}Application should be running at: https://${SERVER_IP} (or your domain if configured).${NC}"
 }
 
-deploy_app_placeholder() {
-    echo -e "${YELLOW}This is a placeholder for deploying the application.${NC}"
+check_logs() {
+    echo -e "${CYAN}Checking Docker container logs on the server...${NC}"
+    _get_deploy_params
+
+    local SERVER_IP="${SERVER_IP}"
+    local USERNAME="${DEPLOY_USER}"
+    local SSH_PORT="${SSH_DEPLOY_PORT}"
+    local REMOTE_DIR="/opt/chillteacher"
+
+    local SSH_CMD="ssh -p $SSH_PORT $USERNAME@$SERVER_IP"
+
+    echo -e "${BLUE}Tailing logs from docker-compose on ${SERVER_IP}...${NC}"
+    $SSH_CMD "cd $REMOTE_DIR && docker-compose logs -f --tail=100"
+
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}Error checking logs on server! Make sure the app is deployed and running.${NC}"
+        return 1
+    fi
 }
 
 # --- Setup Functions ---
@@ -172,8 +257,8 @@ show_deployment_menu() {
             "Generate SSH Key (local)"
             "Copy SSH Key to Server"
             "Test SSH Connection"
-            "Install Docker on Server"
-            "Deploy Application (placeholder)"
+            "Deploy Application with Docker"
+            "Check Docker Logs"
             "Back to Main Menu"
         )
         COLUMNS=1
@@ -184,8 +269,8 @@ show_deployment_menu() {
                 1) deploy_generate_key; break ;;
                 2) deploy_copy_key; break ;;
                 3) deploy_test_conn; break ;;
-                4) deploy_install_docker; break ;;
-                5) deploy_app_placeholder; break ;;
+                4) deploy_app_with_docker; break ;;
+                5) check_logs; break ;;
                 $((${#options[@]}))) return ;;
                 *)
                     echo -e "${RED}Invalid option '$REPLY'. Please try again.${NC}"

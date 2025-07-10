@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  nextjs-app:
+    image: chillteacher-v2-app:latest
+    restart: always
+    environment:
+      NODE_ENV: production
+
+  caddy:
+    image: caddy:latest
+    restart: always
+    ports:
+      - "80:80"   # HTTP
+      - "443:443" # HTTPS
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro # Mount the Caddyfile
+      - caddy_data:/data # Persistent storage for Caddy (e.g., SSL certs)
+    depends_on:
+      - nextjs-app
+
+volumes:
+  caddy_data:
