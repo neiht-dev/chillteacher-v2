@@ -1,4 +1,4 @@
-chillteacher.com {
+www.chillteacher.com {
   # Enable automatic HTTPS
   # tls internal
 
@@ -23,4 +23,8 @@ chillteacher.com {
 
   # Enable compression
   encode gzip zstd
+}
+
+chillteacher.com {
+    redir https://www.chillteacher.com{uri} permanent
 }

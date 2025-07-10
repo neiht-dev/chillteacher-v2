@@ -94,95 +94,64 @@ deploy_test_conn() {
     ssh -p "$SSH_DEPLOY_PORT" "${DEPLOY_USER}@${SERVER_IP}" "echo -e '${GREEN}✓ SSH connection successful!${NC}'"
 }
 
-deploy_app_with_docker() {
-    echo -e "${CYAN}Initiating Docker deployment to server...${NC}"
+deploy() {
+    echo -e "${CYAN}Initiating deployment to server...${NC}"
     _get_deploy_params
 
     local SERVER_IP="${SERVER_IP}"
     local USERNAME="${DEPLOY_USER}"
     local SSH_PORT="${SSH_DEPLOY_PORT}"
-
     local REMOTE_DIR="/opt/chillteacher"
     local PROJECT_ROOT="$(pwd)"
+    local SSH_CMD="ssh -p $SSH_PORT $USERNAME@$SERVER_IP"
+    local SCP_CMD="scp -P $SSH_PORT"
+    
+    local rebuild_image=""
+    while [[ "$rebuild_image" != "y" && "$rebuild_image" != "n" ]]; do
+        read -p "Rebuild Docker image? (y/n): " rebuild_image
+    done
 
-    # Setup SSH Control Master for connection reuse
-    local SSH_CONTROL_PATH="/tmp/ssh_mux_%h_%p_%r"
-    local SSH_OPTS="-o ControlMaster=auto -o ControlPath=$SSH_CONTROL_PATH -o ControlPersist=1h -o StrictHostKeyChecking=accept-new"
-    local SSH_CMD="ssh $SSH_OPTS -p $SSH_PORT $USERNAME@$SERVER_IP"
-    local SCP_CMD="scp -P $SSH_PORT $SSH_OPTS"
+    local setup_arg="no-rebuild"
+    if [ "$rebuild_image" = "y" ]; then
+        setup_arg="rebuild"
+        # Build Docker image locally
+        echo -e "${BLUE}Building Docker image locally...${NC}"
+        docker build -t chillteacher-v2-app:latest $PROJECT_ROOT
+        if [ $? -ne 0 ]; then echo -e "${RED}Error building Docker image!${NC}"; exit 1; fi
+        echo -e "${GREEN}✓ Docker image built successfully!${NC}"
 
-    echo -e "${BLUE}=== DEPLOYING CHILLTEACHER V2 ===${NC}"
-    echo -e "${YELLOW}Server IP: ${SERVER_IP}${NC}"
-    echo -e "${YELLOW}Username: ${USERNAME}${NC}"
-    echo -e "${YELLOW}SSH Port: ${SSH_PORT}${NC}"
-    echo -e "${YELLOW}Remote Directory: ${REMOTE_DIR}${NC}"
-    echo ""
+        # Save Docker image to a tar file
+        echo -e "${BLUE}Saving Docker image to tar file...${NC}"
+        local_tar_path="$PROJECT_ROOT/chillteacher-v2-app.tar.gz"
+        docker save chillteacher-v2-app:latest | gzip > "$local_tar_path"
+        if [ $? -ne 0 ]; then echo -e "${RED}Error saving Docker image!${NC}"; exit 1; fi
+        echo -e "${GREEN}✓ Docker image saved successfully!${NC}"
 
-    # Create remote directory
-    echo -e "${BLUE}Creating remote directory on server...${NC}"
-    $SSH_CMD "mkdir -p $REMOTE_DIR"
-    if [ $? -ne 0 ]; then
-        echo -e "${RED}Error creating remote directory!${NC}"
-        exit 1
+        # Copy image to server
+        echo -e "${BLUE}Copying image to server...${NC}"
+        $SCP_CMD "$local_tar_path" "$USERNAME@$SERVER_IP:$REMOTE_DIR/chillteacher-image.tar.gz"
+        if [ $? -ne 0 ]; then echo -e "${RED}Error copying image to server!${NC}"; exit 1; fi
+        echo -e "${GREEN}✓ Image copied successfully!${NC}"
+        
+        # Clean up local tar file
+        echo -e "${BLUE}Cleaning up local tar file...${NC}"
+        rm -f "$local_tar_path"
     fi
-    echo -e "${GREEN}✓ Remote directory created successfully!${NC}"
 
-    # Build Docker image locally
-    echo -e "${BLUE}Building Docker image locally...${NC}"
-    docker build -t chillteacher-v2-app:latest $PROJECT_ROOT
-    if [ $? -ne 0 ]; then
-        echo -e "${RED}Error building Docker image!${NC}"
-        exit 1
-    fi
-    echo -e "${GREEN}✓ Docker image built successfully!${NC}"
-
-    # Save Docker image to a tar file
-    echo -e "${BLUE}Saving Docker image to tar file...${NC}"
-    local_tar_path="$PROJECT_ROOT/chillteacher-v2-app.tar.gz"
-    docker save chillteacher-v2-app:latest | gzip > "$local_tar_path"
-    if [ $? -ne 0 ]; then
-        echo -e "${RED}Error saving Docker image!${NC}"
-        exit 1
-    fi
-    echo -e "${GREEN}✓ Docker image saved successfully!${NC}"
-
-    # Copy files to server
-    echo -e "${BLUE}Copying files to server...${NC}"
-    $SCP_CMD "$local_tar_path" "$USERNAME@$SERVER_IP:$REMOTE_DIR/chillteacher-image.tar.gz"
+    # Copy deployment files
+    echo -e "${BLUE}Copying deployment files to server...${NC}"
     $SCP_CMD "$PROJECT_ROOT/docker-compose.yml" "$USERNAME@$SERVER_IP:$REMOTE_DIR/"
     $SCP_CMD "$PROJECT_ROOT/Caddyfile" "$USERNAME@$SERVER_IP:$REMOTE_DIR/"
     $SCP_CMD "$PROJECT_ROOT/setup-server.sh" "$USERNAME@$SERVER_IP:$REMOTE_DIR/"
-
-    if [ $? -ne 0 ]; then
-        echo -e "${RED}Error copying files to server!${NC}"
-        exit 1
-    fi
-    echo -e "${GREEN}✓ Files copied successfully!${NC}"
-
-    # Make setup-server.sh executable on remote
-    echo -e "${BLUE}Making setup-server.sh executable on remote...${NC}"
-    $SSH_CMD "chmod +x $REMOTE_DIR/setup-server.sh"
+    if [ $? -ne 0 ]; then echo -e "${RED}Error copying deployment files to server!${NC}"; exit 1; fi
+    echo -e "${GREEN}✓ Deployment files copied successfully!${NC}"
 
     # Run setup-server.sh on remote
     echo -e "${BLUE}Running setup-server.sh on remote server...${NC}"
-    $SSH_CMD "cd $REMOTE_DIR && ./setup-server.sh"
-
-    if [ $? -ne 0 ]; then
-        echo -e "${RED}Error running setup script on server!${NC}"
-        exit 1
-    fi
-    echo -e "${GREEN}✓ Server setup and deployment initiated successfully!${NC}"
-
-    # Clean up local tar file
-    echo -e "${BLUE}Cleaning up local tar file...${NC}"
-    rm -f "$local_tar_path"
-
-    # Close SSH Control Master connection
-    echo -e "${BLUE}Closing SSH connection...${NC}"
-    ssh $SSH_OPTS -p $SSH_PORT -O exit $USERNAME@$SERVER_IP
+    $SSH_CMD "chmod +x $REMOTE_DIR/setup-server.sh && cd $REMOTE_DIR && ./setup-server.sh $setup_arg"
+    if [ $? -ne 0 ]; then echo -e "${RED}Error running setup script on server!${NC}"; exit 1; fi
 
     echo -e "${GREEN}=== DEPLOYMENT COMPLETE! ===${NC}"
-    echo -e "${YELLOW}Application should be running at: https://${SERVER_IP} (or your domain if configured).${NC}"
 }
 
 check_logs() {
@@ -254,10 +223,10 @@ show_deployment_menu() {
     while true; do
         echo -e "\n${BOLD}${CYAN}--- VPS Server Setup & Deployment ---${NC}"
         local options=(
+            "Deploy"
             "Generate SSH Key (local)"
             "Copy SSH Key to Server"
             "Test SSH Connection"
-            "Deploy Application with Docker"
             "Check Docker Logs"
             "Back to Main Menu"
         )
@@ -266,10 +235,10 @@ show_deployment_menu() {
         select opt in "${options[@]}"; do
             case $REPLY in
                 0) clear; break ;;
-                1) deploy_generate_key; break ;;
-                2) deploy_copy_key; break ;;
-                3) deploy_test_conn; break ;;
-                4) deploy_app_with_docker; break ;;
+                1) deploy; break ;;
+                2) deploy_generate_key; break ;;
+                3) deploy_copy_key; break ;;
+                4) deploy_test_conn; break ;;
                 5) check_logs; break ;;
                 $((${#options[@]}))) return ;;
                 *)

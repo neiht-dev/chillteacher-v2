@@ -48,8 +48,7 @@ if ! command -v docker &> /dev/null; then
     echo "Docker installed successfully!"
 fi
 
-# Load Docker image if present
-if [ -f "chillteacher-image.tar.gz" ]; then
+if [ "$1" = "rebuild" ]; then
     echo "Loading Docker image..."
     docker load < chillteacher-image.tar.gz
     rm chillteacher-image.tar.gz
@@ -63,6 +62,9 @@ mkdir -p ./caddy_data
 # Bring up the application with Docker Compose
 echo "Starting application with Docker Compose..."
 docker compose up -d
+
+echo "Restarting Caddy to apply new configuration..."
+docker compose restart caddy
 
 echo "Current working directory: $(pwd)"
 echo "Directory contents:"
