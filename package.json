@@ -16,7 +16,9 @@
 		"antd": "^5.26.3",
 		"antd-style": "^3.7.1",
 		"cookies-next": "^6.0.0",
+		"drizzle-orm": "^0.44.2",
 		"next": "15.3.5",
+		"pg": "^8.16.3",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
 		"recharts": "^3.0.2"
@@ -27,6 +29,7 @@
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
 		"concurrently": "^9.2.0",
+		"drizzle-kit": "^0.31.4",
 		"eslint": "^9",
 		"eslint-config-next": "15.3.5",
 		"eslint-config-prettier": "^10.1.5",

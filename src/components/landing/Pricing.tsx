@@ -7,15 +7,15 @@ const { Title, Paragraph } = Typography;
 
 const plans = [
 	{
-		name: 'Người bắt đầu',
+		name: 'Cơ Bản',
 		price: 'Miễn phí',
 		period: 'mãi mãi',
-		description: 'Hoàn hảo cho các giáo viên mới bắt đầu',
+		description: 'Hoàn hảo cho giáo viên mới bắt đầu',
 		features: [
 			'Tối đa 30 học sinh',
 			'Flashcard cơ bản',
-			'Kế hoạch bài học đơn giản',
-			'5 bảng tính có thể in/tháng',
+			'Giáo án đơn giản',
+			'5 bảng tính in được/tháng',
 			'Hỗ trợ qua email',
 			'Truy cập ứng dụng di động',
 		],
@@ -30,48 +30,48 @@ const plans = [
 		color: 'border-gray-200',
 	},
 	{
-		name: 'Chuyên nghiệp',
-		price: '12 đô la',
+		name: 'Chuyên Nghiệp',
+		price: '250.000 VNĐ',
 		period: 'mỗi tháng',
-		description: 'Lý tưởng cho các giáo viên tích cực trong lớp học',
+		description: 'Lý tưởng cho giáo viên năng động',
 		features: [
 			'Tối đa 150 học sinh',
 			'Flashcard nâng cao có đa phương tiện',
 			'Trình tạo bài học tương tác',
-			'Bảng tính có thể in không giới hạn',
+			'Bảng tính in được không giới hạn',
 			'Trò chơi giáo dục',
 			'Phân tích cơ bản',
-			'Hỗ trợ qua email ưu tiên',
+			'Hỗ trợ ưu tiên qua email',
 			'Truy cập ứng dụng di động',
 		],
 		notIncluded: [
 			'Phân tích nâng cao',
-			'Xây dựng thương hiệu tùy chỉnh',
+			'Tùy chỉnh thương hiệu',
 			'Truy cập API',
-			'Hỗ trợ chuyên dụng',
+			'Hỗ trợ chuyên biệt',
 		],
-		cta: 'Bắt đầu dùng thử miễn phí 14 ngày',
+		cta: 'Bắt đầu dùng thử 14 ngày',
 		featured: true,
 		color: 'border-blue-500',
 	},
 	{
-		name: 'Trường học',
-		price: '25 đô la',
+		name: 'Trường Học',
+		price: '500.000 VNĐ',
 		period: 'mỗi tháng',
 		description: 'Tốt nhất cho các phòng ban và trường học',
 		features: [
-			'Học sinh không giới hạn',
-			'Tất cả các tính năng chuyên nghiệp',
-			'Phân tích & thông tin chi tiết nâng cao',
-			'Xây dựng thương hiệu tùy chỉnh',
+			'Không giới hạn học sinh',
+			'Tất cả tính năng của gói Chuyên Nghiệp',
+			'Phân tích & thông tin chuyên sâu',
+			'Tùy chỉnh thương hiệu',
 			'Công cụ cộng tác nhóm',
 			'Truy cập API',
-			'Người quản lý tài khoản chuyên dụng',
+			'Quản lý tài khoản riêng',
 			'Hỗ trợ qua điện thoại',
 			'Tích hợp tùy chỉnh',
 		],
 		notIncluded: [],
-		cta: 'Liên hệ với bộ phận bán hàng',
+		cta: 'Liên hệ bộ phận kinh doanh',
 		featured: false,
 		color: 'border-orange-500',
 	},
@@ -105,7 +105,7 @@ const Pricing = () => {
 							marginBottom: token.marginLG,
 						}}
 					>
-						Chọn kế hoạch hoàn hảo của bạn
+						Chọn gói phù hợp với bạn
 					</Title>
 					<Paragraph
 						style={{
@@ -115,8 +115,8 @@ const Pricing = () => {
 							margin: '0 auto',
 						}}
 					>
-						Cho dù bạn mới bắt đầu hay đang điều hành cả một bộ phận, chúng tôi đều có một kế hoạch
-						phù hợp với nhu cầu và ngân sách của bạn.
+						Dù bạn mới bắt đầu hay quản lý cả một phòng ban, chúng tôi đều có gói dịch vụ phù hợp
+						với nhu cầu và ngân sách của bạn.
 					</Paragraph>
 				</div>
 

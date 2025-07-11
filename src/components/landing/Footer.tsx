@@ -39,8 +39,8 @@ const Footer = () => {
 								marginBottom: token.marginLG,
 							}}
 						>
-							Trao quyền cho các nhà giáo dục bằng các công cụ sáng tạo để tạo ra trải nghiệm học
-							tập hấp dẫn, hiệu quả đồng thời tiết kiệm thời gian và giảm căng thẳng.
+							Tiếp sức cho nhà giáo bằng những công cụ sáng tạo, giúp tạo ra trải nghiệm học tập
+							hứng khởi, hiệu quả, đồng thời tiết kiệm thời gian và giảm bớt căng thẳng.
 						</Paragraph>
 						<Flex gap={token.marginSM}>
 							<FacebookFilled
@@ -89,7 +89,7 @@ const Footer = () => {
 								marginBottom: token.margin,
 							}}
 						>
-							Sản phẩm
+							Sản Phẩm
 						</div>
 						<Flex vertical gap={token.marginSM}>
 							<Link
@@ -99,7 +99,7 @@ const Footer = () => {
 									textDecoration: 'none',
 								}}
 							>
-								Tính năng
+								Tính Năng
 							</Link>
 							<Link
 								href="/"
@@ -108,7 +108,7 @@ const Footer = () => {
 									textDecoration: 'none',
 								}}
 							>
-								Giá cả
+								Bảng Giá
 							</Link>
 							<Link
 								href="/"
@@ -117,7 +117,7 @@ const Footer = () => {
 									textDecoration: 'none',
 								}}
 							>
-								Dùng thử miễn phí
+								Dùng Thử
 							</Link>
 							<Link
 								href="/"
@@ -126,7 +126,7 @@ const Footer = () => {
 									textDecoration: 'none',
 								}}
 							>
-								Ứng dụng di động
+								Ứng Dụng Di Động
 							</Link>
 							<Link
 								href="/"
@@ -144,7 +144,7 @@ const Footer = () => {
 									textDecoration: 'none',
 								}}
 							>
-								Tích hợp
+								Tích Hợp
 							</Link>
 						</Flex>
 					</Col>
@@ -157,7 +157,7 @@ const Footer = () => {
 								marginBottom: token.margin,
 							}}
 						>
-							Tài nguyên
+							Tài Nguyên
 						</div>
 						<Flex vertical gap={token.marginSM}>
 							<Link
@@ -167,7 +167,7 @@ const Footer = () => {
 									textDecoration: 'none',
 								}}
 							>
-								Trung tâm trợ giúp
+								Trung Tâm Hỗ Trợ
 							</Link>
 							<Link
 								href="/"
@@ -185,7 +185,7 @@ const Footer = () => {
 									textDecoration: 'none',
 								}}
 							>
-								Hội thảo trên web
+								Hội Thảo
 							</Link>
 							<Link
 								href="/"
@@ -194,7 +194,7 @@ const Footer = () => {
 									textDecoration: 'none',
 								}}
 							>
-								Mẫu
+								Biểu Mẫu
 							</Link>
 							<Link
 								href="/"
@@ -203,7 +203,7 @@ const Footer = () => {
 									textDecoration: 'none',
 								}}
 							>
-								Cộng đồng
+								Cộng Đồng
 							</Link>
 							<Link
 								href="/"
@@ -212,7 +212,7 @@ const Footer = () => {
 									textDecoration: 'none',
 								}}
 							>
-								Nghiên cứu điển hình
+								Tình Huống Thực Tế
 							</Link>
 						</Flex>
 					</Col>
@@ -225,7 +225,7 @@ const Footer = () => {
 								marginBottom: token.margin,
 							}}
 						>
-							Công ty
+							Công Ty
 						</div>
 						<Flex vertical gap={token.marginSM}>
 							<Link
@@ -235,7 +235,7 @@ const Footer = () => {
 									textDecoration: 'none',
 								}}
 							>
-								Về chúng tôi
+								Về Chúng Tôi
 							</Link>
 							<Link
 								href="/"
@@ -244,7 +244,7 @@ const Footer = () => {
 									textDecoration: 'none',
 								}}
 							>
-								Nghề nghiệp
+								Tuyển Dụng
 							</Link>
 							<Link
 								href="/"
@@ -253,7 +253,7 @@ const Footer = () => {
 									textDecoration: 'none',
 								}}
 							>
-								Báo chí
+								Báo Chí
 							</Link>
 							<Link
 								href="/"
@@ -262,7 +262,7 @@ const Footer = () => {
 									textDecoration: 'none',
 								}}
 							>
-								Đối tác
+								Đối Tác
 							</Link>
 							<Link
 								href="/"
@@ -271,7 +271,7 @@ const Footer = () => {
 									textDecoration: 'none',
 								}}
 							>
-								Liên hệ
+								Liên Hệ
 							</Link>
 							<Link
 								href="/"
@@ -280,7 +280,7 @@ const Footer = () => {
 									textDecoration: 'none',
 								}}
 							>
-								Trạng thái
+								Trạng Thái
 							</Link>
 						</Flex>
 					</Col>
@@ -295,7 +295,7 @@ const Footer = () => {
 						fontSize: 14,
 					}}
 				>
-					© {new Date().getFullYear()} ChillTeacher. All rights reserved.
+					© {new Date().getFullYear()} ChillTeacher. Đã đăng ký bản quyền.
 				</div>
 			</div>
 		</footer>

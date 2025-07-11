@@ -90,7 +90,7 @@ const Features = () => {
 							marginBottom: token.marginLG,
 						}}
 					>
-						Mọi thứ bạn cần trong một nền tảng
+						Mọi thứ bạn cần, trong một nền tảng
 					</Title>
 					<Paragraph
 						style={{
@@ -100,8 +100,8 @@ const Features = () => {
 							margin: '0 auto',
 						}}
 					>
-						ChillTeacher tập hợp tất cả các công cụ bạn cần để tạo ra các bài học hấp dẫn, hiệu quả
-						đồng thời giúp bạn tiết kiệm thời gian cho các công việc hành chính.
+						ChillTeacher hội tụ tất cả công cụ bạn cần để tạo nên những bài giảng lôi cuốn, hiệu
+						quả, đồng thời tiết kiệm thời gian quản lý hành chính.
 					</Paragraph>
 				</div>
 				<Row gutter={[token.margin, token.margin]}>
@@ -167,7 +167,7 @@ const Features = () => {
 								marginBottom: token.marginLG,
 							}}
 						>
-							Sẵn sàng thay đổi cách dạy của bạn?
+							Sẵn sàng đổi mới phương pháp giảng dạy?
 						</Title>
 						<Paragraph
 							style={{
@@ -176,7 +176,7 @@ const Features = () => {
 								marginBottom: token.marginXL,
 							}}
 						>
-							Tham gia cùng hàng nghìn giáo viên đã khám phá ra sự khác biệt của ChillTeacher.
+							Gia nhập cộng đồng hàng ngàn giáo viên đã tạo nên sự khác biệt với ChillTeacher.
 						</Paragraph>
 						<Button
 							type="primary"
@@ -188,7 +188,7 @@ const Features = () => {
 								color: token.colorPrimary,
 							}}
 						>
-							Bắt đầu dùng thử miễn phí của bạn
+							Bắt đầu dùng thử miễn phí
 						</Button>
 					</Card>
 				</div>

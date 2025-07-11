@@ -4,7 +4,7 @@ FROM node:20-alpine AS base
 # Install dependencies in a separate stage to leverage Docker cache
 FROM base AS deps
 WORKDIR /app
-COPY package.json yarn.lock* package-lock.json* ./
+COPY package.json package-lock.json* ./
 RUN npm ci
 
 # Build the Next.js application
@@ -23,7 +23,6 @@ ENV NODE_ENV=production
 
 # Copy necessary files from the builder stage
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json

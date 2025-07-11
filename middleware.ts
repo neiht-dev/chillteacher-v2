@@ -19,6 +19,8 @@ const protectedRoutes = [
 const authRoutes = ['/login', '/signup'];
 
 export function middleware(request: NextRequest) {
+	console.log('middleware');
+
 	const { pathname } = request.nextUrl;
 
 	// Get user from cookies or headers

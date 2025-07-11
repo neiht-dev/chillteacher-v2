@@ -6,44 +6,44 @@ const { Title, Paragraph } = Typography;
 
 const faqs = [
 	{
-		question: 'Bản dùng thử miễn phí hoạt động như thế nào?',
+		question: 'Dùng thử miễn phí hoạt động ra sao?',
 		answer:
-			'Bạn có toàn quyền truy cập vào tất cả các tính năng Chuyên nghiệp trong 14 ngày. Không cần thẻ tín dụng để bắt đầu. Sau khi dùng thử, bạn có thể chọn đăng ký hoặc tiếp tục với gói Starter miễn phí.',
+			'Bạn được toàn quyền sử dụng các tính năng của gói Chuyên Nghiệp trong 14 ngày mà không cần nhập thông tin thanh toán. Sau thời gian này, bạn có thể đăng ký gói trả phí hoặc tiếp tục với gói Miễn Phí.',
 	},
 	{
-		question: 'Tôi có thể chuyển đổi gói bất cứ lúc nào không?',
+		question: 'Tôi có thể thay đổi gói dịch vụ không?',
 		answer:
-			'Chắc chắn rồi! Bạn có thể nâng cấp hoặc hạ cấp gói của mình bất cứ lúc nào. Các thay đổi có hiệu lực ngay lập tức và chúng tôi sẽ tính toán lại mọi điều chỉnh thanh toán.',
+			'Chắc chắn rồi! Bạn có thể nâng cấp hoặc hạ cấp gói dịch vụ bất cứ lúc nào. Thay đổi sẽ được áp dụng ngay lập tức và chúng tôi sẽ tự động điều chỉnh chi phí cho bạn.',
 	},
 	{
-		question: 'Dữ liệu của tôi có an toàn không?',
+		question: 'Dữ liệu của tôi có được bảo mật?',
 		answer:
-			'Có, chúng tôi rất coi trọng vấn đề bảo mật. Tất cả dữ liệu được mã hóa khi truyền và khi lưu trữ. Chúng tôi tuân thủ FERPA và tuân theo các nguyên tắc bảo mật nghiêm ngặt đối với dữ liệu giáo dục.',
+			'Có, bảo mật là ưu tiên hàng đầu của chúng tôi. Mọi dữ liệu đều được mã hóa trong quá trình truyền tải và lưu trữ. Chúng tôi tuân thủ các tiêu chuẩn bảo mật nghiêm ngặt nhất cho dữ liệu giáo dục.',
 	},
 	{
-		question: 'Bạn có giảm giá cho các trường học không?',
+		question: 'Có ưu đãi cho trường học không?',
 		answer:
-			'Có! Chúng tôi cung cấp chiết khấu số lượng lớn cho các trường học và học khu. Liên hệ với nhóm bán hàng của chúng tôi để có giá tùy chỉnh dựa trên nhu cầu của bạn.',
+			'Có chứ! Chúng tôi có chính sách chiết khấu hấp dẫn cho các trường học và tổ chức giáo dục. Hãy liên hệ với bộ phận kinh doanh để nhận báo giá tốt nhất.',
 	},
 	{
-		question: 'Tôi có thể nhập dữ liệu hiện có của mình không?',
+		question: 'Tôi có thể nhập dữ liệu cũ không?',
 		answer:
-			'Có, chúng tôi cung cấp hỗ trợ di chuyển miễn phí để giúp bạn nhập dữ liệu học sinh, kế hoạch bài học và các tài liệu khác hiện có của mình từ các nền tảng khác.',
+			'Có, chúng tôi hỗ trợ chuyển dữ liệu miễn phí, giúp bạn dễ dàng nhập thông tin học sinh, giáo án và các tài liệu khác từ hệ thống cũ.',
 	},
 	{
-		question: 'Bạn cung cấp loại hỗ trợ nào?',
+		question: 'ChillTeacher hỗ trợ khách hàng như thế nào?',
 		answer:
-			'Chúng tôi cung cấp hỗ trợ qua email cho tất cả người dùng, với hỗ trợ ưu tiên cho người đăng ký Chuyên nghiệp và hỗ trợ qua điện thoại chuyên dụng cho người dùng gói Trường học. Chúng tôi cũng có tài liệu và video hướng dẫn phong phú.',
+			'Chúng tôi hỗ trợ qua email cho mọi khách hàng. Gói Chuyên Nghiệp và Trường Học sẽ được ưu tiên hỗ trợ qua email và điện thoại. Ngoài ra, chúng tôi còn có hệ thống tài liệu và video hướng dẫn chi tiết.',
 	},
 	{
-		question: 'ChillTeacher có hoạt động ngoại tuyến không?',
+		question: 'ChillTeacher có dùng offline được không?',
 		answer:
-			'Một số tính năng hoạt động ngoại tuyến thông qua ứng dụng di động của chúng tôi, bao gồm xem các bài học và flashcard đã tải xuống. Tuy nhiên, hầu hết các tính năng yêu cầu kết nối internet để có đầy đủ chức năng.',
+			'Một vài tính năng trên ứng dụng di động có thể hoạt động ngoại tuyến, ví dụ như xem lại bài giảng hay flashcard đã lưu. Tuy nhiên, để trải nghiệm đầy đủ, bạn cần có kết nối internet.',
 	},
 	{
-		question: 'Phụ huynh có thể truy cập vào sự tiến bộ của học sinh không?',
+		question: 'Phụ huynh có xem được kết quả học tập của con không?',
 		answer:
-			'Có, bạn có thể chia sẻ báo cáo tiến độ của học sinh với phụ huynh thông qua tính năng cổng thông tin dành cho phụ huynh của chúng tôi, có sẵn trên các gói Chuyên nghiệp và Trường học.',
+			'Có, với gói Chuyên Nghiệp và Trường Học, bạn có thể dễ dàng chia sẻ báo cáo học tập của học sinh cho phụ huynh thông qua cổng thông tin riêng.',
 	},
 ];
 
@@ -75,11 +75,11 @@ const FAQ = () => {
 						}}
 					>
 						<QuestionCircleOutlined style={{ color: token.colorPrimary, marginRight: 8 }} />
-						Các câu hỏi thường gặp
+						Giải Đáp Thắc Mắc
 					</Title>
 					<Paragraph style={{ fontSize: 20, color: token.colorTextDescription }}>
-						Có câu hỏi? Chúng tôi có câu trả lời. Nếu bạn không thể tìm thấy những gì bạn đang tìm
-						kiếm, vui lòng liên hệ với nhóm hỗ trợ của chúng tôi.
+						Bạn có thắc mắc? Chúng tôi đã có câu trả lời. Nếu không tìm thấy điều bạn cần, đừng
+						ngần ngại liên hệ đội ngũ hỗ trợ của chúng tôi.
 					</Paragraph>
 				</div>
 				<Collapse
@@ -111,10 +111,10 @@ const FAQ = () => {
 						bodyStyle={{ background: 'transparent', color: token.colorWhite }}
 					>
 						<Title level={3} style={{ color: token.colorWhite, marginBottom: token.marginLG }}>
-							Still have questions?
+							Vẫn còn thắc mắc?
 						</Title>
 						<Paragraph style={{ color: token.colorInfoBg, marginBottom: token.marginXL }}>
-							Our friendly support team is here to help you succeed.
+							Đội ngũ hỗ trợ thân thiện của chúng tôi luôn sẵn sàng giúp bạn.
 						</Paragraph>
 						<Button
 							type="default"
@@ -126,7 +126,7 @@ const FAQ = () => {
 								color: token.colorPrimary,
 							}}
 						>
-							Contact Support
+							Liên Hệ Hỗ Trợ
 						</Button>
 					</Card>
 				</div>

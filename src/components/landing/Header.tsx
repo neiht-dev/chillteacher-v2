@@ -25,31 +25,31 @@ const { Text } = Typography;
 
 const navItems = [
 	{
-		label: 'Tính năng',
+		label: 'Tính Năng',
 		key: '#features',
 		href: '#features',
 		icon: <AppstoreOutlined />,
 	},
 	{
-		label: 'Giá cả',
+		label: 'Bảng Giá',
 		key: '#pricing',
 		href: '#pricing',
 		icon: <DollarOutlined />,
 	},
 	{
-		label: 'Lời chứng thực',
+		label: 'Cảm Nhận',
 		key: '#testimonials',
 		href: '#testimonials',
 		icon: <MessageOutlined />,
 	},
 	{
-		label: 'Câu hỏi thường gặp',
+		label: 'Hỏi Đáp',
 		key: '#faq',
 		href: '#faq',
 		icon: <QuestionCircleOutlined />,
 	},
 	{
-		label: 'Liên hệ',
+		label: 'Liên Hệ',
 		key: '#contact',
 		href: '#contact',
 		icon: <PhoneOutlined />,

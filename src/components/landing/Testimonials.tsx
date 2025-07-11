@@ -7,63 +7,63 @@ const { Title, Paragraph, Text } = Typography;
 
 const testimonials = [
 	{
-		name: 'Sarah Johnson',
-		role: 'Giáo viên tiểu học',
-		school: 'Trường tiểu học Riverside',
+		name: 'Nguyễn Thị Thảo',
+		role: 'Giáo viên Tiểu học',
+		school: 'Trường Tiểu học Bình Minh',
 		image:
 			'https://images.pexels.com/photos/3762800/pexels-photo-3762800.jpeg?auto=compress&cs=tinysrgb&w=300',
 		content:
-			'ChillTeacher đã thay đổi hoàn toàn cách tôi quản lý lớp học của mình. Các công cụ quản lý học sinh thật đáng kinh ngạc và các con tôi rất thích các bài học tương tác!',
+			'ChillTeacher đã thay đổi hoàn toàn cách tôi quản lý lớp học. Các công cụ quản lý học sinh thật tuyệt vời và các em học sinh của tôi rất thích các bài học tương tác!',
 		rating: 5,
 	},
 	{
-		name: 'Michael Chen',
-		role: 'Giáo viên khoa học trường trung học cơ sở',
-		school: 'Trường trung học cơ sở Lincoln',
+		name: 'Trần Văn Hùng',
+		role: 'Giáo viên Khoa học THCS',
+		school: 'Trường THCS Chu Văn An',
 		image:
 			'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=300',
 		content:
-			'Tính năng flashcard là một yếu tố thay đổi cuộc chơi đối với từ vựng khoa học. Học sinh của tôi tham gia nhiều hơn bao giờ hết và tôi tiết kiệm được hàng giờ để chuẩn bị bài học.',
+			'Tính năng flashcard là một bước đột phá cho việc học từ vựng khoa học. Học sinh của tôi hứng thú hơn bao giờ hết và tôi tiết kiệm được rất nhiều thời gian chuẩn bị bài giảng.',
 		rating: 5,
 	},
 	{
-		name: 'Emily Rodriguez',
-		role: 'Giáo viên tiếng Anh trường trung học phổ thông',
-		school: 'Trường trung học phổ thông trung tâm',
+		name: 'Lê Thị Mai',
+		role: 'Giáo viên Tiếng Anh THPT',
+		school: 'Trường THPT Chuyên Lê Hồng Phong',
 		image:
 			'https://images.pexels.com/photos/3985062/pexels-photo-3985062.jpeg?auto=compress&cs=tinysrgb&w=300',
 		content:
-			'Tôi thích việc tạo bảng tính và theo dõi sự tiến bộ của học sinh dễ dàng như thế nào. ChillTeacher đã làm cho việc giảng dạy trở nên thú vị và hiệu quả hơn rất nhiều.',
+			'Tôi rất thích cách ChillTeacher giúp tôi tạo bảng tính và theo dõi tiến độ học sinh một cách dễ dàng. Việc giảng dạy trở nên thú vị và hiệu quả hơn rất nhiều.',
 		rating: 5,
 	},
 	{
-		name: 'David Thompson',
-		role: 'Giáo viên toán',
-		school: 'Học viện Westside',
+		name: 'Phạm Minh Đức',
+		role: 'Giáo viên Toán',
+		school: 'Học viện Khai Sáng',
 		image:
 			'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=300',
 		content:
-			'Các phân tích giúp tôi hiểu chính xác nơi mỗi học sinh cần hỗ trợ. Giống như có một trợ giảng không bao giờ ngủ!',
+			'Các phân tích giúp tôi hiểu chính xác từng học sinh cần hỗ trợ ở đâu. Giống như có một trợ giảng không bao giờ ngủ vậy!',
 		rating: 5,
 	},
 	{
-		name: 'Lisa Park',
-		role: 'Giáo viên nghệ thuật',
-		school: 'Trường nghệ thuật sáng tạo',
+		name: 'Đỗ Thị Lan',
+		role: 'Giáo viên Mỹ thuật',
+		school: 'Trường Nghệ thuật Sáng Tạo',
 		image:
 			'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=300',
 		content:
-			'Ngay cả với tư cách là một giáo viên nghệ thuật, tôi thấy ChillTeacher cực kỳ hữu ích để quản lý các dự án và thu hút học sinh bằng các bài thuyết trình tương tác.',
+			'Ngay cả với tư cách là một giáo viên mỹ thuật, tôi thấy ChillTeacher cực kỳ hữu ích để quản lý các dự án và thu hút học sinh bằng các bài thuyết trình tương tác.',
 		rating: 5,
 	},
 	{
-		name: 'Robert Wilson',
-		role: 'Giáo viên thể dục',
-		school: 'Học viện thể thao',
+		name: 'Vũ Đình Khang',
+		role: 'Giáo viên Thể dục',
+		school: 'Học viện Thể thao Quốc Gia',
 		image:
 			'https://images.pexels.com/photos/2182973/pexels-photo-2182973.jpeg?auto=compress&cs=tinysrgb&w=300',
 		content:
-			'Ai biết được một nền tảng kỹ thuật số có thể hoạt động tốt cho môn thể dục? Các tính năng trò chơi hóa đã làm cho việc theo dõi thể chất trở nên thú vị đối với học sinh của tôi.',
+			'Ai mà ngờ một nền tảng kỹ thuật số lại có thể hiệu quả cho môn thể dục? Các tính năng trò chơi hóa đã làm cho việc theo dõi thể chất trở nên thú vị đối với học sinh của tôi.',
 		rating: 5,
 	},
 ];
@@ -96,7 +96,7 @@ const Testimonials = () => {
 							marginBottom: token.marginLG,
 						}}
 					>
-						Được các giáo viên ở mọi nơi yêu thích
+						Được các giáo viên trên khắp Việt Nam yêu thích
 					</Title>
 					<Paragraph
 						style={{
@@ -106,7 +106,7 @@ const Testimonials = () => {
 							margin: '0 auto',
 						}}
 					>
-						Đừng chỉ tin lời chúng tôi. Đây là những gì các nhà giáo dục đang nói về ChillTeacher.
+						Đừng chỉ nghe chúng tôi nói. Đây là những gì các nhà giáo dục đang chia sẻ về ChillTeacher.
 					</Paragraph>
 				</div>
 
@@ -209,7 +209,7 @@ const Testimonials = () => {
 							character={<StarFilled />}
 							style={{ color: token.colorWarning }}
 						/>
-						<span>4.9/5 từ hơn 10.000 bài đánh giá</span>
+						<span>4.9/5 từ hơn 10.000 đánh giá</span>
 					</Flex>
 					<Paragraph
 						style={{
