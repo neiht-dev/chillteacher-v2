@@ -4,6 +4,17 @@
 # Set working directory
 cd /opt/chillteacher
 
+# Load environment variables from .env file if it exists
+if [ -f ".env" ]; then
+    echo "Loading environment variables from .env file..."
+    set -o allexport
+    source .env
+    set +o allexport
+    echo "Environment variables loaded successfully!"
+else
+    echo "Warning: .env file not found. Using default environment variables."
+fi
+
 # Install Docker if not already present
 if ! command -v docker &> /dev/null; then
     echo "Installing Docker..."

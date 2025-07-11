@@ -4,19 +4,59 @@
 # CLI tool for managing the ChillTeacher v2 project
 
 # --- Configuration ---
-# Source .env if it exists and export variables
-if [ -f ".env" ]; then
-    echo -e "\033[0;36mLoading environment variables from .env file...\033[0m"
-    set -o allexport
-    source .env
-    set +o allexport
-fi
+# Environment loading function
+load_environment() {
+    local env_type="${1:-local}"
+    
+    case "$env_type" in
+        "local"|"dev"|"development")
+            if [ -f ".env.local" ]; then
+                echo -e "\033[0;36mLoading local development environment from .env.local...\033[0m"
+                set -o allexport
+                source .env.local
+                set +o allexport
+                export ENV_TYPE="local"
+            elif [ -f ".env" ]; then
+                echo -e "\033[0;36mLoading environment from .env file...\033[0m"
+                set -o allexport
+                source .env
+                set +o allexport
+                export ENV_TYPE="local"
+            else
+                echo -e "\033[1;33mWarning: No .env.local or .env file found. Using defaults.\033[0m"
+                export ENV_TYPE="local"
+            fi
+            ;;
+        "prod"|"production")
+            if [ -f ".env.prod" ]; then
+                echo -e "\033[0;36mLoading production environment from .env.prod...\033[0m"
+                set -o allexport
+                source .env.prod
+                set +o allexport
+                export ENV_TYPE="production"
+            else
+                echo -e "\033[1;33mWarning: No .env.prod file found. Using defaults.\033[0m"
+                export ENV_TYPE="production"
+            fi
+            ;;
+        *)
+            echo -e "\033[0;31mError: Unknown environment type '$env_type'. Using local.\033[0m"
+            load_environment "local"
+            ;;
+    esac
+}
+
+# Load local environment by default
+load_environment "local"
 
 # Colors
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 RED='\033[0;31m'
+CYAN='\033[0;36m'
+MAGENTA='\033[0;35m'
+BOLD='\033[1m'
 NC='\033[0m' # No Color
 
 # --- Helper Functions ---
@@ -38,6 +78,28 @@ _get_deploy_params() {
 # --- Target Functions ---
 run_dev() {
     echo -e "${CYAN}Starting the app in development mode (with Turbopack)...${NC}"
+    
+    # Ensure we're using local environment for development
+    if [ "$ENV_TYPE" != "local" ]; then
+        echo -e "${YELLOW}Switching to local environment for development...${NC}"
+        load_environment "local"
+    fi
+    
+    # Check if development database is running
+    if ! docker-compose -f docker-compose.dev.yml ps | grep -q "Up"; then
+        echo -e "${YELLOW}Development database is not running. Starting it now...${NC}"
+        docker_dev_up
+        if [ $? -ne 0 ]; then
+            echo -e "${RED}Failed to start development database. Please check the logs.${NC}"
+            return 1
+        fi
+        # Give database a moment to fully start
+        echo -e "${BLUE}Waiting for database to be ready...${NC}"
+        sleep 3
+    else
+        echo -e "${GREEN}✓ Development database is already running${NC}"
+    fi
+    
     npm run fast
 }
 
@@ -96,6 +158,13 @@ deploy_test_conn() {
 
 deploy() {
     echo -e "${CYAN}Initiating deployment to server...${NC}"
+    
+    # Switch to production environment for deployment
+    if [ "$ENV_TYPE" != "production" ]; then
+        echo -e "${YELLOW}Switching to production environment for deployment...${NC}"
+        load_environment "production"
+    fi
+    
     _get_deploy_params
 
     local SERVER_IP="${SERVER_IP}"
@@ -140,7 +209,8 @@ deploy() {
 
     # Copy deployment files
     echo -e "${BLUE}Copying deployment files to server...${NC}"
-    $SCP_CMD "$PROJECT_ROOT/docker-compose.yml" "$USERNAME@$SERVER_IP:$REMOTE_DIR/"
+    $SCP_CMD "$PROJECT_ROOT/docker-compose.prod.yml" "$USERNAME@$SERVER_IP:$REMOTE_DIR/docker-compose.yml"
+    $SCP_CMD "$PROJECT_ROOT/.env.prod" "$USERNAME@$SERVER_IP:$REMOTE_DIR/.env"
     $SCP_CMD "$PROJECT_ROOT/Caddyfile" "$USERNAME@$SERVER_IP:$REMOTE_DIR/"
     $SCP_CMD "$PROJECT_ROOT/setup-server.sh" "$USERNAME@$SERVER_IP:$REMOTE_DIR/"
     if [ $? -ne 0 ]; then echo -e "${RED}Error copying deployment files to server!${NC}"; exit 1; fi
@@ -166,7 +236,7 @@ check_logs() {
     local SSH_CMD="ssh -p $SSH_PORT $USERNAME@$SERVER_IP"
 
     echo -e "${BLUE}Tailing logs from docker-compose on ${SERVER_IP}...${NC}"
-    $SSH_CMD "cd $REMOTE_DIR && docker-compose logs -f --tail=100"
+    $SSH_CMD "cd $REMOTE_DIR && docker compose logs -f --tail=100"
 
     if [ $? -ne 0 ]; then
         echo -e "${RED}Error checking logs on server! Make sure the app is deployed and running.${NC}"
@@ -174,14 +244,196 @@ check_logs() {
     fi
 }
 
+# --- Docker Compose Functions ---
+docker_dev_up() {
+    echo -e "${CYAN}Starting development database with Docker Compose...${NC}"
+    if [ ! -f "docker-compose.dev.yml" ]; then
+        echo -e "${RED}Error: docker-compose.dev.yml not found!${NC}"
+        return 1
+    fi
+    
+    # Ensure we're using local environment
+    if [ "$ENV_TYPE" != "local" ]; then
+        echo -e "${YELLOW}Switching to local environment for development...${NC}"
+        load_environment "local"
+    fi
+    
+    # Check if .env.local file exists
+    if [ ! -f ".env.local" ]; then
+        echo -e "${YELLOW}Warning: .env.local file not found. Creating from .env.local.example...${NC}"
+        setup_env_local
+    fi
+    
+    docker-compose -f docker-compose.dev.yml up -d
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✓ Development database started successfully!${NC}"
+        echo -e "${BLUE}Database is running on localhost:5432${NC}"
+        echo -e "${BLUE}You can connect with: psql -h localhost -U ${POSTGRES_USER:-user} -d ${POSTGRES_DB:-mydatabase}${NC}"
+    else
+        echo -e "${RED}Error starting development database!${NC}"
+        return 1
+    fi
+}
+
+docker_dev_down() {
+    echo -e "${CYAN}Stopping development database...${NC}"
+    docker-compose -f docker-compose.dev.yml down
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✓ Development database stopped successfully!${NC}"
+    else
+        echo -e "${RED}Error stopping development database!${NC}"
+        return 1
+    fi
+}
+
+docker_dev_status() {
+    echo -e "${CYAN}Checking development database status...${NC}"
+    docker-compose -f docker-compose.dev.yml ps
+}
+
+docker_dev_logs() {
+    echo -e "${CYAN}Showing development database logs...${NC}"
+    docker-compose -f docker-compose.dev.yml logs -f
+}
+
+docker_dev_restart() {
+    echo -e "${CYAN}Restarting development database...${NC}"
+    docker-compose -f docker-compose.dev.yml restart
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✓ Development database restarted successfully!${NC}"
+    else
+        echo -e "${RED}Error restarting development database!${NC}"
+        return 1
+    fi
+}
+
+docker_dev_reset() {
+    echo -e "${YELLOW}⚠️  WARNING: This will delete all database data!${NC}"
+    read -p "Are you sure you want to reset the database? (y/N): " confirm
+    if [[ "$confirm" =~ ^[Yy]$ ]]; then
+        echo -e "${CYAN}Resetting development database...${NC}"
+        docker-compose -f docker-compose.dev.yml down -v
+        docker-compose -f docker-compose.dev.yml up -d
+        if [ $? -eq 0 ]; then
+            echo -e "${GREEN}✓ Development database reset successfully!${NC}"
+        else
+            echo -e "${RED}Error resetting development database!${NC}"
+            return 1
+        fi
+    else
+        echo -e "${BLUE}Database reset cancelled.${NC}"
+    fi
+}
+
+# --- Environment Management Functions ---
+switch_to_local() {
+    echo -e "${CYAN}Switching to local development environment...${NC}"
+    load_environment "local"
+    echo -e "${GREEN}✓ Switched to local development environment${NC}"
+    echo -e "${BLUE}Current environment: ${ENV_TYPE}${NC}"
+}
+
+switch_to_production() {
+    echo -e "${CYAN}Switching to production environment...${NC}"
+    load_environment "production"
+    echo -e "${GREEN}✓ Switched to production environment${NC}"
+    echo -e "${BLUE}Current environment: ${ENV_TYPE}${NC}"
+}
+
+show_current_env() {
+    echo -e "${CYAN}Current Environment Information:${NC}"
+    echo -e "${BLUE}Environment Type: ${ENV_TYPE}${NC}"
+    echo -e "${BLUE}Database User: ${POSTGRES_USER:-not set}${NC}"
+    echo -e "${BLUE}Database Name: ${POSTGRES_DB:-not set}${NC}"
+    echo -e "${BLUE}Node Environment: ${NODE_ENV:-not set}${NC}"
+    if [ -n "$DATABASE_URL" ]; then
+        echo -e "${BLUE}Database URL: ${DATABASE_URL:0:20}...${NC}"
+    else
+        echo -e "${BLUE}Database URL: not set${NC}"
+    fi
+}
+
 # --- Setup Functions ---
 setup_env() {
-    if [ -f ".env" ]; then
-        echo -e "${YELLOW}.env file already exists. Skipping creation.${NC}"
+    echo -e "${CYAN}Environment Setup${NC}"
+    echo -e "${BLUE}Choose which environment file to create:${NC}"
+    echo "1) Local Development (.env.local)"
+    echo "2) Production (.env.prod)"
+    echo "3) Both"
+    echo "4) Cancel"
+    
+    read -p "Enter your choice (1-4): " choice
+    
+    case $choice in
+        1)
+            if [ -f ".env.local" ]; then
+                echo -e "${YELLOW}.env.local already exists. Skipping creation.${NC}"
+            else
+                echo -e "${CYAN}Creating .env.local file from .env.local.example...${NC}"
+                if [ -f ".env.local.example" ]; then
+                    cp .env.local.example .env.local
+                    echo -e "${GREEN}✓ .env.local file created successfully. Please update with your local secrets.${NC}"
+                else
+                    echo -e "${RED}Error: .env.local.example not found!${NC}"
+                    return 1
+                fi
+            fi
+            ;;
+        2)
+            if [ -f ".env.prod" ]; then
+                echo -e "${YELLOW}.env.prod already exists. Skipping creation.${NC}"
+            else
+                echo -e "${CYAN}Creating .env.prod file from .env.prod.example...${NC}"
+                if [ -f ".env.prod.example" ]; then
+                    cp .env.prod.example .env.prod
+                    echo -e "${GREEN}✓ .env.prod file created successfully. Please update with your production secrets.${NC}"
+                else
+                    echo -e "${RED}Error: .env.prod.example not found!${NC}"
+                    return 1
+                fi
+            fi
+            ;;
+        3)
+            setup_env_local
+            setup_env_prod
+            ;;
+        4)
+            echo -e "${BLUE}Environment setup cancelled.${NC}"
+            ;;
+        *)
+            echo -e "${RED}Invalid choice. Please try again.${NC}"
+            setup_env
+            ;;
+    esac
+}
+
+setup_env_local() {
+    if [ -f ".env.local" ]; then
+        echo -e "${YELLOW}.env.local already exists. Skipping creation.${NC}"
     else
-        echo -e "${CYAN}Creating .env file from .env.example...${NC}"
-        cp .env.example .env
-        echo -e "${GREEN}✓ .env file created successfully. Please fill it with your secrets.${NC}"
+        echo -e "${CYAN}Creating .env.local file from .env.local.example...${NC}"
+        if [ -f ".env.local.example" ]; then
+            cp .env.local.example .env.local
+            echo -e "${GREEN}✓ .env.local file created successfully. Please update with your local secrets.${NC}"
+        else
+            echo -e "${RED}Error: .env.local.example not found!${NC}"
+            return 1
+        fi
+    fi
+}
+
+setup_env_prod() {
+    if [ -f ".env.prod" ]; then
+        echo -e "${YELLOW}.env.prod already exists. Skipping creation.${NC}"
+    else
+        echo -e "${CYAN}Creating .env.prod file from .env.prod.example...${NC}"
+        if [ -f ".env.prod.example" ]; then
+            cp .env.prod.example .env.prod
+            echo -e "${GREEN}✓ .env.prod file created successfully. Please update with your production secrets.${NC}"
+        else
+            echo -e "${RED}Error: .env.prod.example not found!${NC}"
+            return 1
+        fi
     fi
 }
 
@@ -254,7 +506,10 @@ show_setup_menu() {
     while true; do
         echo -e "\n${BOLD}${CYAN}--- Project Setup ---${NC}"
         local options=(
-            "Create .env file"
+            "Create Environment Files"
+            "Switch to Local Environment"
+            "Switch to Production Environment"
+            "Show Current Environment"
             "Back to Main Menu"
         )
         COLUMNS=1
@@ -263,6 +518,47 @@ show_setup_menu() {
             case $REPLY in
                 0) clear; break ;;
                 1) setup_env; break ;;
+                2) switch_to_local; break ;;
+                3) switch_to_production; break ;;
+                4) show_current_env; break ;;
+                $((${#options[@]}))) return ;;
+                *)
+                    echo -e "${RED}Invalid option '$REPLY'. Please try again.${NC}"
+                    break
+                    ;;
+            esac
+        done
+    done
+}
+
+show_docker_menu() {
+    while true; do
+        echo -e "\n${BOLD}${CYAN}--- Docker Compose Management ---${NC}"
+        echo -e "${BLUE}Current Environment: ${ENV_TYPE}${NC}"
+        local options=(
+            "Start Development Database"
+            "Stop Development Database"
+            "Restart Development Database"
+            "Check Database Status"
+            "View Database Logs"
+            "Reset Database (⚠️  DANGER)"
+            "Switch to Local Environment"
+            "Switch to Production Environment"
+            "Back to Main Menu"
+        )
+        COLUMNS=1
+        PS3="Docker action (0 to clear)? "
+        select opt in "${options[@]}"; do
+            case $REPLY in
+                0) clear; break ;;
+                1) docker_dev_up; break ;;
+                2) docker_dev_down; break ;;
+                3) docker_dev_restart; break ;;
+                4) docker_dev_status; break ;;
+                5) docker_dev_logs; break ;;
+                6) docker_dev_reset; break ;;
+                7) switch_to_local; break ;;
+                8) switch_to_production; break ;;
                 $((${#options[@]}))) return ;;
                 *)
                     echo -e "${RED}Invalid option '$REPLY'. Please try again.${NC}"
@@ -284,6 +580,7 @@ main_menu() {
             "Project Commands"
             "Deployment"
             "Setup"
+            "Docker"
             "Quit"
         )
         select opt in "${main_options[@]}"; do
@@ -296,6 +593,7 @@ main_menu() {
                 1) show_project_menu; break ;;
                 2) show_deployment_menu; break ;;
                 3) show_setup_menu; break ;;
+                4) show_docker_menu; break ;;
                 $((${#main_options[@]}))) echo -e "${GREEN}Exiting CLI. Goodbye!${NC}"; exit 0 ;;
                 *)
                     echo -e "${RED}Invalid option '$REPLY'. Type 'q' or the number for 'Quit' to exit.${NC}"
