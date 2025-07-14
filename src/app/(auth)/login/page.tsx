@@ -6,26 +6,32 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Logo } from '@/components/ui/Logo';
 import { ThemeLangControl } from '@/components/ui/ThemeLangControl';
-import { useAuth } from '@/contexts/AuthContext';
 import { useLang } from '@/contexts/LangContext';
+import { signIn } from 'next-auth/react';
+import { useState } from 'react';
 
 const LoginPage = () => {
 	const { message } = AntApp.useApp();
 	const router = useRouter();
 	const searchParams = useSearchParams();
-	const { login, isLoading } = useAuth();
 	const { t } = useLang();
+	const [isLoading, setIsLoading] = useState(false);
 
 	const handleSubmit = async (values: { email: string; password: string }) => {
-		try {
-			await login(values.email, values.password);
-			// Redirect to the original requested page or dashboard
+		setIsLoading(true);
+		const result = await signIn('credentials', {
+			redirect: false,
+			email: values.email,
+			password: values.password,
+		});
+
+		if (result?.error) {
+			message.error(t('Invalid email or password'));
+		} else {
 			const redirectTo = searchParams.get('redirect') || '/dashboard';
 			router.push(redirectTo);
-		} catch (error) {
-			message.error(t('Invalid email or password'));
-			console.error(error);
 		}
+		setIsLoading(false);
 	};
 
 	return (

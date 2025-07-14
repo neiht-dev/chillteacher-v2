@@ -37,7 +37,6 @@ import { usePathname, useRouter } from 'next/navigation';
 // Import Components
 import { Logo } from '@/components/ui/Logo';
 import { ThemeLangControl } from '@/components/ui/ThemeLangControl';
-import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 
 // Import contexts
 import { useAuth } from '@/contexts/AuthContext';
@@ -156,136 +155,134 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
 
 	// Return the MainLayout component
 	return (
-		<ProtectedRoute>
-			<Layout style={{ minHeight: '100vh' }}>
-				{/* Header */}
-				<Header
-					style={{
-						height: '3rem',
-						display: 'flex',
-						justifyContent: 'space-between',
-						alignItems: 'center',
-						boxShadow: token.boxShadow,
-						zIndex: 1,
-						padding: '0 1rem',
-					}}
-				>
-					{/* Left side - Logo */}
-					<Logo />
-					{/* Right side - Controls and User */}
-					<Flex align="center" gap="middle">
-						{/* Theme and Language Controls */}
-						<ThemeLangControl />
+		<Layout style={{ minHeight: '100vh' }}>
+			{/* Header */}
+			<Header
+				style={{
+					height: '3rem',
+					display: 'flex',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					boxShadow: token.boxShadow,
+					zIndex: 1,
+					padding: '0 1rem',
+				}}
+			>
+				{/* Left side - Logo */}
+				<Logo />
+				{/* Right side - Controls and User */}
+				<Flex align="center" gap="middle">
+					{/* Theme and Language Controls */}
+					<ThemeLangControl />
 
-						{/* Divider */}
-						<Divider type="vertical" style={{ height: '1.5rem', margin: '0' }} />
+					{/* Divider */}
+					<Divider type="vertical" style={{ height: '1.5rem', margin: '0' }} />
 
-						{/* User Menu */}
-						<Dropdown
-							menu={{ items: userMenuItems, onClick: handleMenuClick }}
-							placement="bottomRight"
-							trigger={['click']}
+					{/* User Menu */}
+					<Dropdown
+						menu={{ items: userMenuItems, onClick: handleMenuClick }}
+						placement="bottomRight"
+						trigger={['click']}
+					>
+						<Flex
+							align="center"
+							gap="small"
+							className="cursor-pointer"
+							style={{
+								padding: '0.25rem 0.5rem',
+								borderRadius: '6px',
+								transition: 'background-color 0.2s',
+							}}
 						>
-							<Flex
-								align="center"
-								gap="small"
-								className="cursor-pointer"
+							<Avatar
+								icon={<UserOutlined />}
+								size="small"
+								style={{ backgroundColor: token.colorPrimary }}
+							/>
+							<Text
 								style={{
-									padding: '0.25rem 0.5rem',
-									borderRadius: '6px',
-									transition: 'background-color 0.2s',
+									fontSize: '0.875rem',
+									color: token.colorText,
+									whiteSpace: 'nowrap',
 								}}
 							>
+								{user?.name}
+							</Text>
+						</Flex>
+					</Dropdown>
+				</Flex>
+			</Header>
+
+			{/* Sidebar and Content */}
+			<Layout style={{ margin: '0.25rem 0.25rem' }}>
+				{/* Sidebar */}
+				<Sider
+					trigger={null}
+					collapsible
+					collapsed={collapsed}
+					breakpoint="lg"
+					width={200}
+					style={{ boxShadow: token.boxShadow, borderRadius: '10px' }}
+				>
+					<Flex vertical style={{ height: '100%' }}>
+						<Link href="/schools" style={{ textDecoration: 'none' }}>
+							<Flex vertical justify="space-between" align="center" style={{ padding: '1rem' }}>
 								<Avatar
-									icon={<UserOutlined />}
-									size="small"
-									style={{ backgroundColor: token.colorPrimary }}
+									size={60}
+									src="https://img.freepik.com/premium-vector/university-college-school-crests-logo-emblem-vector-template_441059-1011.jpg?semt=ais_hybrid&w=740"
 								/>
 								<Text
+									strong
 									style={{
-										fontSize: '0.875rem',
-										color: token.colorText,
+										fontSize: '1rem',
 										whiteSpace: 'nowrap',
+										opacity: collapsed ? 0 : 1,
+										transform: collapsed ? 'translateY(-10px)' : 'translateY(0)',
+										transition: 'opacity 0.3s ease, transform 0.3s ease',
+										height: collapsed ? 0 : 'auto',
+										overflow: 'hidden',
+										margin: collapsed ? 0 : '0.5rem 0',
 									}}
 								>
-									{user?.name}
+									School Name
 								</Text>
+								<Divider style={{ margin: '0.5rem' }} />
 							</Flex>
-						</Dropdown>
-					</Flex>
-				</Header>
+						</Link>
 
-				{/* Sidebar and Content */}
-				<Layout style={{ margin: '0.25rem 0.25rem' }}>
-					{/* Sidebar */}
-					<Sider
-						trigger={null}
-						collapsible
-						collapsed={collapsed}
-						breakpoint="lg"
-						width={200}
-						style={{ boxShadow: token.boxShadow, borderRadius: '10px' }}
-					>
-						<Flex vertical style={{ height: '100%' }}>
-							<Link href="/schools" style={{ textDecoration: 'none' }}>
-								<Flex vertical justify="space-between" align="center" style={{ padding: '1rem' }}>
-									<Avatar
-										size={60}
-										src="https://img.freepik.com/premium-vector/university-college-school-crests-logo-emblem-vector-template_441059-1011.jpg?semt=ais_hybrid&w=740"
-									/>
-									<Text
-										strong
-										style={{
-											fontSize: '1rem',
-											whiteSpace: 'nowrap',
-											opacity: collapsed ? 0 : 1,
-											transform: collapsed ? 'translateY(-10px)' : 'translateY(0)',
-											transition: 'opacity 0.3s ease, transform 0.3s ease',
-											height: collapsed ? 0 : 'auto',
-											overflow: 'hidden',
-											margin: collapsed ? 0 : '0.5rem 0',
-										}}
-									>
-										School Name
-									</Text>
-									<Divider style={{ margin: '0.5rem' }} />
-								</Flex>
-							</Link>
-
-							<Flex vertical justify="space-between" style={{ height: '100%' }}>
-								<Menu
-									style={{
-										border: 'none',
-										display: 'flex',
-										flexDirection: 'column',
-										gap: '0.5rem',
-									}}
-									mode="inline"
-									selectedKeys={[pathname]}
-									items={menuItems}
-									// onClick={({ key }) => router.push(key)}
-								/>
-								<div style={{ padding: '0.5rem' }}>
-									<TriggerButton collapsed={collapsed} setCollapsed={setCollapsed} />
-								</div>
-							</Flex>
+						<Flex vertical justify="space-between" style={{ height: '100%' }}>
+							<Menu
+								style={{
+									border: 'none',
+									display: 'flex',
+									flexDirection: 'column',
+									gap: '0.5rem',
+								}}
+								mode="inline"
+								selectedKeys={[pathname]}
+								items={menuItems}
+								// onClick={({ key }) => router.push(key)}
+							/>
+							<div style={{ padding: '0.5rem' }}>
+								<TriggerButton collapsed={collapsed} setCollapsed={setCollapsed} />
+							</div>
 						</Flex>
-					</Sider>
+					</Flex>
+				</Sider>
 
-					{/* Content */}
-					<Content
-						style={{
-							padding: '1rem',
-							height: 'calc(100vh - 4rem)',
-							overflow: 'auto',
-						}}
-						className="custom-scrollbar"
-					>
-						{children}
-					</Content>
-				</Layout>
+				{/* Content */}
+				<Content
+					style={{
+						padding: '1rem',
+						height: 'calc(100vh - 4rem)',
+						overflow: 'auto',
+					}}
+					className="custom-scrollbar"
+				>
+					{children}
+				</Content>
 			</Layout>
-		</ProtectedRoute>
+		</Layout>
 	);
 };
 

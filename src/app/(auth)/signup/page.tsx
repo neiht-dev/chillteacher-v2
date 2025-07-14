@@ -6,29 +6,41 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Logo } from '@/components/ui/Logo';
 import { ThemeLangControl } from '@/components/ui/ThemeLangControl';
-import { useAuth } from '@/contexts/AuthContext';
 import { useLang } from '@/contexts/LangContext';
+import { useState } from 'react';
 
 const SignUpPage = () => {
 	const { message } = AntApp.useApp();
 	const router = useRouter();
-	const { signup, isLoading } = useAuth();
 	const { t } = useLang();
+	const [isLoading, setIsLoading] = useState(false);
 
 	const handleSubmit = async (values: {
 		name: string;
 		email: string;
 		password: string;
-		confirmPassword: string;
 	}) => {
+		setIsLoading(true);
 		try {
-			await signup(values.name, values.email, values.password);
-			message.success(t('Account created successfully!'));
-			router.push('/dashboard');
+			const response = await fetch('/api/auth/register', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(values),
+			});
+
+			if (response.ok) {
+				message.success(t('Account created successfully!'));
+				router.push('/login');
+			} else {
+				message.error(t('Failed to create account'));
+			}
 		} catch (error) {
 			message.error(t('Failed to create account'));
 			console.error(error);
 		}
+		setIsLoading(false);
 	};
 
 	return (

@@ -213,6 +213,9 @@ deploy() {
     $SCP_CMD "$PROJECT_ROOT/.env.prod" "$USERNAME@$SERVER_IP:$REMOTE_DIR/.env"
     $SCP_CMD "$PROJECT_ROOT/Caddyfile" "$USERNAME@$SERVER_IP:$REMOTE_DIR/"
     $SCP_CMD "$PROJECT_ROOT/setup-server.sh" "$USERNAME@$SERVER_IP:$REMOTE_DIR/"
+    # Copy migrations directory
+    echo -e "${BLUE}Copying migrations directory to server...${NC}"
+    $SCP_CMD -r "$PROJECT_ROOT/migrations" "$USERNAME@$SERVER_IP:$REMOTE_DIR/"
     if [ $? -ne 0 ]; then echo -e "${RED}Error copying deployment files to server!${NC}"; exit 1; fi
     echo -e "${GREEN}✓ Deployment files copied successfully!${NC}"
 
@@ -220,6 +223,18 @@ deploy() {
     echo -e "${BLUE}Running setup-server.sh on remote server...${NC}"
     $SSH_CMD "chmod +x $REMOTE_DIR/setup-server.sh && cd $REMOTE_DIR && ./setup-server.sh $setup_arg"
     if [ $? -ne 0 ]; then echo -e "${RED}Error running setup script on server!${NC}"; exit 1; fi
+
+    local run_migrations=""
+    while [[ "$run_migrations" != "y" && "$run_migrations" != "n" ]]; do
+        read -p "Run database migrations on remote server? (y/n): " run_migrations
+    done
+
+    if [ "$run_migrations" = "y" ]; then
+        echo -e "${BLUE}Running database migrations on remote server...${NC}"
+        $SSH_CMD "cd $REMOTE_DIR && ./setup-server.sh run-migrations"
+        if [ $? -ne 0 ]; then echo -e "${RED}Error running migrations on server!${NC}"; exit 1; fi
+        echo -e "${GREEN}✓ Database migrations completed on remote server!${NC}"
+    fi
 
     echo -e "${GREEN}=== DEPLOYMENT COMPLETE! ===${NC}"
 }

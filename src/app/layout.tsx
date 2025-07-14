@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '@ant-design/v5-patch-for-react-19';
 import './globals.css';
+import { Providers } from './providers';
 
 // Import database initialization (will auto-run in development)
 import { checkDb } from '@/db/db-init';
@@ -28,7 +29,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 	return (
 		<html lang="en">
 			<body className={`${geistSans.variable} ${geistMono.variable}`}>
-				<AppProvider>{children}</AppProvider>
+				<Providers>
+					<AppProvider>{children}</AppProvider>
+				</Providers>
 			</body>
 		</html>
 	);
