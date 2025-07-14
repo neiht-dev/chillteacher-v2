@@ -19,7 +19,6 @@ import {
 	Input,
 	List,
 	Modal,
-	message,
 	// Progress,
 	Row,
 	Select,
@@ -28,6 +27,7 @@ import {
 	Table,
 	Tag,
 	Typography,
+	App as AntApp,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import type React from 'react';
@@ -49,6 +49,7 @@ interface School {
 
 // Mock Data
 const Schools: React.FC = () => {
+	const { message } = AntApp.useApp();
 	const [selectedSchool, setSelectedSchool] = useState<School | null>(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);

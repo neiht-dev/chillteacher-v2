@@ -1,6 +1,6 @@
 'use client';
 
-import { message } from 'antd';
+import { App as AntApp } from 'antd';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 // Import translations
@@ -28,6 +28,7 @@ const LangContext = createContext<LangContextType | undefined>(undefined);
 
 // LangProvider is the provider that is used to wrap the app with the language context
 export const LangProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+	const { message } = AntApp.useApp();
 	// Define the state for the selected language
 	// Initial value is the language from the local storage
 	// It can be en or vi

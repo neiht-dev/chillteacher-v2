@@ -329,12 +329,10 @@ const AppContent = ({ children }: { children: React.ReactNode }) => {
 
 	return (
 		<ConfigProvider theme={actualTheme === Theme.Light ? themeLightConfig : themeDarkConfig}>
-			<AntApp>
-				{/* Add theme name for custom styling */}
-				<div className={actualTheme}>
-					<IsMounted>{children}</IsMounted>
-				</div>
-			</AntApp>
+			{/* Add theme name for custom styling */}
+			<div className={actualTheme}>
+				<IsMounted>{children}</IsMounted>
+			</div>
 		</ConfigProvider>
 	);
 };
@@ -342,12 +340,14 @@ const AppContent = ({ children }: { children: React.ReactNode }) => {
 // Define AppProvider to use global Contexts
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 	return (
-		<LangProvider>
-			<ThemeProvider>
-				<AuthProvider>
-					<AppContent>{children}</AppContent>
-				</AuthProvider>
-			</ThemeProvider>
-		</LangProvider>
+		<AntApp>
+			<LangProvider>
+				<ThemeProvider>
+					<AuthProvider>
+						<AppContent>{children}</AppContent>
+					</AuthProvider>
+				</ThemeProvider>
+			</LangProvider>
+		</AntApp>
 	);
 };

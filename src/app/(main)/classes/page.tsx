@@ -33,6 +33,7 @@ import {
 	Tag,
 	Transfer,
 	Typography,
+	App as AntApp,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import type React from 'react';
@@ -68,6 +69,7 @@ interface ClassData {
 }
 
 const Classes: React.FC = () => {
+	const { message } = AntApp.useApp();
 	const [selectedClass, setSelectedClass] = useState<ClassData | null>(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);

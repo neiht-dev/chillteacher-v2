@@ -17,7 +17,6 @@ import {
 	Input,
 	List,
 	Modal,
-	message,
 	Progress,
 	Row,
 	Select,
@@ -27,6 +26,7 @@ import {
 	Table,
 	Tag,
 	Typography,
+	App as AntApp,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
@@ -59,6 +59,7 @@ interface ClassSession {
 }
 
 const Classroom: React.FC = () => {
+	const { message } = AntApp.useApp();
 	const [selectedClass, setSelectedClass] = useState<string>('');
 	const [selectedDate, setSelectedDate] = useState(dayjs());
 	const [isAnnouncementModalOpen, setIsAnnouncementModalOpen] = useState(false);

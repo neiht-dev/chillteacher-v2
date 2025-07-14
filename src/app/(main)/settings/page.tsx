@@ -24,7 +24,6 @@ import {
 	Form,
 	Input,
 	Modal,
-	message,
 	Row,
 	Select,
 	Space,
@@ -34,6 +33,7 @@ import {
 	Tag,
 	Typography,
 	Upload,
+	App as AntApp,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import type React from 'react';
@@ -52,6 +52,7 @@ interface UserRole {
 }
 
 const Settings: React.FC = () => {
+	const { message } = AntApp.useApp();
 	const [form] = Form.useForm();
 	const [userForm] = Form.useForm();
 	const [isUserModalOpen, setIsUserModalOpen] = useState(false);

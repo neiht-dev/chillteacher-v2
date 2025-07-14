@@ -1,7 +1,7 @@
 'use client';
 
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Card, Form, Input, message } from 'antd';
+import { Button, Card, Form, Input, App as AntApp } from 'antd';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Logo } from '@/components/ui/Logo';
@@ -10,6 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useLang } from '@/contexts/LangContext';
 
 const LoginPage = () => {
+	const { message } = AntApp.useApp();
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const { login, isLoading } = useAuth();

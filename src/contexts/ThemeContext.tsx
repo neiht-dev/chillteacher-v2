@@ -1,6 +1,6 @@
 'use client';
 
-import { message } from 'antd';
+import { App as AntApp } from 'antd';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { getFromLocalStorage, LocalStorageKeys, setToLocalStorage } from '../utils/utils';
 import { useLang } from './LangContext';
@@ -40,6 +40,7 @@ const getSystemTheme = (): ActualTheme => {
 };
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+	const { message } = AntApp.useApp();
 	const { t } = useLang();
 	// Define the state for the selected theme
 	// Initial value is the theme from the local storage

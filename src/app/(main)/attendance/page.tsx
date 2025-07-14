@@ -21,14 +21,15 @@ import {
 	Input,
 	List,
 	Modal,
-	message,
 	Row,
 	Select,
 	Space,
 	Statistic,
 	Tag,
 	Typography,
+	App as AntApp,
 } from 'antd';
+
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import type React from 'react';
@@ -53,6 +54,7 @@ interface Student {
 }
 
 const StudentAttendance: React.FC = () => {
+	const { message } = AntApp.useApp();
 	const [selectedStudent, setSelectedStudent] = useState<string>('');
 	const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs());
 	const [isModalOpen, setIsModalOpen] = useState(false);

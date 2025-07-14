@@ -24,7 +24,6 @@ import {
 	Form,
 	Input,
 	Modal,
-	message,
 	Row,
 	Select,
 	Space,
@@ -32,6 +31,7 @@ import {
 	Table,
 	Tag,
 	Typography,
+	App as AntApp,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
@@ -60,6 +60,7 @@ interface Student {
 }
 
 const Students: React.FC = () => {
+	const { message } = AntApp.useApp();
 	const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
