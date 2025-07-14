@@ -78,8 +78,8 @@ const FAQ = () => {
 						Giải Đáp Thắc Mắc
 					</Title>
 					<Paragraph style={{ fontSize: 20, color: token.colorTextDescription }}>
-						Bạn có thắc mắc? Chúng tôi đã có câu trả lời. Nếu không tìm thấy điều bạn cần, đừng
-						ngần ngại liên hệ đội ngũ hỗ trợ của chúng tôi.
+						Bạn có thắc mắc? Chúng tôi đã có câu trả lời. Nếu không tìm thấy điều bạn cần, đừng ngần
+						ngại liên hệ đội ngũ hỗ trợ của chúng tôi.
 					</Paragraph>
 				</div>
 				<Collapse

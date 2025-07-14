@@ -106,7 +106,8 @@ const Testimonials = () => {
 							margin: '0 auto',
 						}}
 					>
-						Đừng chỉ nghe chúng tôi nói. Đây là những gì các nhà giáo dục đang chia sẻ về ChillTeacher.
+						Đừng chỉ nghe chúng tôi nói. Đây là những gì các nhà giáo dục đang chia sẻ về
+						ChillTeacher.
 					</Paragraph>
 				</div>
 

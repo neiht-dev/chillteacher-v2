@@ -3,6 +3,10 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import '@ant-design/v5-patch-for-react-19';
 import './globals.css';
 
+// Import database initialization (will auto-run in development)
+import { checkDb } from '@/db/db-init';
+checkDb();
+
 const geistSans = Geist({
 	variable: '--font-geist-sans',
 	subsets: ['latin'],

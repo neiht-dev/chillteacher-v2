@@ -325,6 +325,54 @@ docker_dev_reset() {
     fi
 }
 
+
+
+db_generate_migration() {
+    echo -e "${CYAN}Generating database migration...${NC}"
+    
+    npm run db:generate
+    
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✓ Migration generated successfully!${NC}"
+        echo -e "${BLUE}Check the drizzle/ directory for new migration files.${NC}"
+    else
+        echo -e "${RED}✗ Migration generation failed!${NC}"
+        return 1
+    fi
+}
+
+db_run_migration() {
+    echo -e "${CYAN}Running database migrations...${NC}"
+    
+    # Ensure we're using the correct environment
+    if [ "$ENV_TYPE" != "local" ]; then
+        echo -e "${YELLOW}Switching to local environment for database operations...${NC}"
+        load_environment "local"
+    fi
+
+    if [ -n "$DATABASE_URL" ]; then
+        echo -e "${BLUE}Database URL: ${DATABASE_URL}${NC}"
+    else
+        echo -e "${BLUE}Database URL: not set${NC}"
+    fi
+
+    # Check if migrations directory exists
+    if [ ! -d "migrations" ]; then
+        echo -e "${RED}Error: migrations/ directory not found!${NC}"
+        return 1
+    fi
+    
+    npm run db:migrate
+    
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✓ Migrations completed successfully!${NC}"
+    else
+        echo -e "${RED}✗ Migration failed!${NC}"
+        return 1
+    fi
+}
+
+
 # --- Environment Management Functions ---
 switch_to_local() {
     echo -e "${CYAN}Switching to local development environment...${NC}"
@@ -569,6 +617,32 @@ show_docker_menu() {
     done
 }
 
+show_database_menu() {
+    while true; do
+        echo -e "\n${BOLD}${CYAN}--- Database Management ---${NC}"
+        echo -e "${BLUE}Current Environment: ${ENV_TYPE}${NC}"
+        local options=(
+            "Generate Migration"
+            "Run Migrations"
+            "Back to Main Menu"
+        )
+        COLUMNS=1
+        PS3="Database action (0 to clear)? "
+        select opt in "${options[@]}"; do
+            case $REPLY in
+                0) clear; break ;;
+                1) db_generate_migration; break ;;
+                2) db_run_migration; break ;;
+                $((${#options[@]}))) return ;;
+                *)
+                    echo -e "${RED}Invalid option '$REPLY'. Please try again.${NC}"
+                    break
+                    ;;
+            esac
+        done
+    done
+}
+
 # --- Main Menu ---
 main_menu() {
     while true; do
@@ -581,6 +655,7 @@ main_menu() {
             "Deployment"
             "Setup"
             "Docker"
+            "Database"
             "Quit"
         )
         select opt in "${main_options[@]}"; do
@@ -594,6 +669,7 @@ main_menu() {
                 2) show_deployment_menu; break ;;
                 3) show_setup_menu; break ;;
                 4) show_docker_menu; break ;;
+                5) show_database_menu; break ;;
                 $((${#main_options[@]}))) echo -e "${GREEN}Exiting CLI. Goodbye!${NC}"; exit 0 ;;
                 *)
                     echo -e "${RED}Invalid option '$REPLY'. Type 'q' or the number for 'Quit' to exit.${NC}"

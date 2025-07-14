@@ -45,9 +45,9 @@ const Hero = () => {
 										marginBottom: 0,
 									}}
 								>
-									Sắp xếp lớp học của bạn với nền tảng tất cả trong một của ChillTeacher. Tạo
-									các bài học hấp dẫn, quản lý học sinh và tiết kiệm thời gian quý báu với các công
-									cụ trực quan của chúng tôi được thiết kế bởi giáo viên, dành cho giáo viên.
+									Sắp xếp lớp học của bạn với nền tảng tất cả trong một của ChillTeacher. Tạo các
+									bài học hấp dẫn, quản lý học sinh và tiết kiệm thời gian quý báu với các công cụ
+									trực quan của chúng tôi được thiết kế bởi giáo viên, dành cho giáo viên.
 								</Paragraph>
 							</Flex>
 							{/* CTA Buttons */}
@@ -164,21 +164,21 @@ const Hero = () => {
 								Dùng Thử Miễn Phí
 							</div>
 							<div
-										style={{
-											position: 'absolute',
-											bottom: -24,
-											left: -24,
-											background: token.colorSuccess,
-											color: token.colorWhite,
-											padding: '8px 24px',
-											borderRadius: 999,
-											fontWeight: token.fontWeightStrong,
-											fontSize: 14,
-											boxShadow: token.boxShadowTertiary,
-										}}
-									>
-										Được hơn 50.000 giáo viên tin dùng
-									</div>
+								style={{
+									position: 'absolute',
+									bottom: -24,
+									left: -24,
+									background: token.colorSuccess,
+									color: token.colorWhite,
+									padding: '8px 24px',
+									borderRadius: 999,
+									fontWeight: token.fontWeightStrong,
+									fontSize: 14,
+									boxShadow: token.boxShadowTertiary,
+								}}
+							>
+								Được hơn 50.000 giáo viên tin dùng
+							</div>
 						</div>
 					</Col>
 				</Row>

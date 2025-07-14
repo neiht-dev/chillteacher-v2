@@ -49,8 +49,8 @@ const Contact = () => {
 							margin: '0 auto',
 						}}
 					>
-						Sẵn sàng đổi mới trải nghiệm dạy học của bạn? Chúng tôi luôn sẵn lòng lắng nghe. Hãy
-						kết nối để cùng nhau làm cho việc dạy học trở nên hứng khởi hơn.
+						Sẵn sàng đổi mới trải nghiệm dạy học của bạn? Chúng tôi luôn sẵn lòng lắng nghe. Hãy kết
+						nối để cùng nhau làm cho việc dạy học trở nên hứng khởi hơn.
 					</Paragraph>
 				</div>
 				<Row gutter={[token.marginXL, token.marginXL]}>
@@ -164,8 +164,8 @@ const Contact = () => {
 										marginBottom: token.marginXL,
 									}}
 								>
-									Chúng tôi luôn ở đây để cùng bạn thành công. Dù bạn có câu hỏi về nền tảng,
-									cần hỗ trợ kỹ thuật, hay muốn tìm kiếm cơ hội hợp tác, đừng ngần ngại liên hệ.
+									Chúng tôi luôn ở đây để cùng bạn thành công. Dù bạn có câu hỏi về nền tảng, cần hỗ
+									trợ kỹ thuật, hay muốn tìm kiếm cơ hội hợp tác, đừng ngần ngại liên hệ.
 								</Paragraph>
 								<Flex vertical gap={token.marginLG}>
 									<Flex align="start" gap={token.marginSM}>
@@ -237,9 +237,7 @@ const Contact = () => {
 											<div style={{ color: token.colorTextDescription }}>
 												Thứ Hai - Thứ Sáu: 8:00 - 18:00
 											</div>
-											<div style={{ color: token.colorTextDescription }}>
-												Thứ Bảy: 8:00 - 16:00
-											</div>
+											<div style={{ color: token.colorTextDescription }}>Thứ Bảy: 8:00 - 16:00</div>
 										</div>
 									</Flex>
 								</Flex>
