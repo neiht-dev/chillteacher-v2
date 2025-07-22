@@ -2,17 +2,16 @@
 
 // Import Icons from Ant Design
 import {
-	BarChartOutlined,
 	BookOutlined,
 	CalendarOutlined,
-	DashboardOutlined,
 	LogoutOutlined,
 	MenuFoldOutlined,
 	MenuUnfoldOutlined,
-	ReadOutlined,
 	SettingOutlined,
 	TeamOutlined,
 	UserOutlined,
+	BankOutlined,
+	AppstoreOutlined,
 } from '@ant-design/icons';
 
 // Import Components from Ant Design
@@ -80,44 +79,44 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
 	// Define the menu items
 	const menuItems: MenuProps['items'] = [
 		{
-			key: '/dashboard',
-			icon: <DashboardOutlined />,
-			label: <Link href="/dashboard">{t('Dashboard')}</Link>,
-		},
-		{
-			key: '/students',
+			key: '/admin/students',
 			icon: <UserOutlined />,
-			label: <Link href="/students">{t('Students')}</Link>,
+			label: <Link href="/admin/students">Học sinh</Link>,
 		},
 		{
-			key: '/teachers',
+			key: '/admin/teachers',
 			icon: <TeamOutlined />,
-			label: <Link href="/teachers">{t('Teachers')}</Link>,
+			label: <Link href="/admin/teachers">Giáo viên</Link>,
 		},
 		{
-			key: '/classes',
+			key: '/admin/schools',
+			icon: <BankOutlined />,
+			label: <Link href="/admin/schools">Trường học</Link>,
+		},
+		{
+			key: '/admin/classes',
+			icon: <AppstoreOutlined />,
+			label: <Link href="/admin/classes">Lớp học</Link>,
+		},
+		{
+			key: '/admin/courses',
 			icon: <BookOutlined />,
-			label: <Link href="/classes">{t('Classes')}</Link>,
+			label: <Link href="/admin/courses">Khoá học</Link>,
 		},
 		{
-			key: '/classroom',
-			icon: <ReadOutlined />,
-			label: <Link href="/classroom">{t('Classroom')}</Link>,
-		},
-		{
-			key: '/attendance',
+			key: '/admin/attendance',
 			icon: <CalendarOutlined />,
-			label: <Link href="/attendance">{t('Attendance')}</Link>,
+			label: <Link href="/admin/attendance">Điểm danh</Link>,
 		},
 		{
-			key: '/reports',
-			icon: <BarChartOutlined />,
-			label: <Link href="/reports">{t('Reports')}</Link>,
+			key: '/admin/enrollments',
+			icon: <BookOutlined />,
+			label: <Link href="/admin/enrollments">Ghi danh</Link>,
 		},
 		{
-			key: '/settings',
-			icon: <SettingOutlined />,
-			label: <Link href="/settings">{t('Settings')}</Link>,
+			key: '/admin/users',
+			icon: <UserOutlined />,
+			label: <Link href="/admin/users">Tài khoản</Link>,
 		},
 	];
 
@@ -259,7 +258,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
 									gap: '0.5rem',
 								}}
 								mode="inline"
-								selectedKeys={[pathname]}
+								selectedKeys={[pathname.startsWith('/admin/') ? pathname : '/admin/students']}
 								items={menuItems}
 								// onClick={({ key }) => router.push(key)}
 							/>
